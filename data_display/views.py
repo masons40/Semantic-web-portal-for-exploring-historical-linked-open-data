@@ -86,7 +86,10 @@ def retData(stringUrl):
 			
 			
 			
-			
+def edit(request):
+    context = retData("http://exploreat.adaptcentre.ie/Source/1")
+
+    return render(request, 'data_display/edit.html',context)
 			
 			
 			

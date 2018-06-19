@@ -1,0 +1,37 @@
+{% extends 'data_display/base.html' %}
+{% load search_filter %}
+{% load staticfiles %}
+        {% block content %}
+		<div class="container mainBox" style="margin-top:50px;">
+			<div class="row" style="border:1px solid #d1d1d1;box-shadow:0 0 1px 1px #d1d1d1">
+				<div class="col-lg-3" style="background-color:#68778e">
+					<h2 style="color:white;">{{ name }} {{ id }}</h2>
+				</div>
+				<div class="col-lg-9" style="background-color:white;">
+					{% for firstIndex in range %}
+					<form action="" method="post">
+					    {% csrf_token %}
+						{% getListLength as listRange %}
+						<div class="row">
+						{% for secondIndex in listRange %}
+							
+								{% typeTest firstIndex secondIndex as condition%}
+								{% if condition %}
+									{% getData firstIndex 'value' secondIndex as urlData %}
+									{% getData firstIndex 'shortname' secondIndex as wordData %}
+									<a href="{{ urlData }}" style="font-family:Sunflower;" class="col-lg-6">{{wordData}}</a>
+								{% else %}
+									{% getData firstIndex 'shortname' secondIndex as wordData %}
+									<input type="text" style="font-family:Sunflower;" name="{{wordData}}" value="{{wordData}}" class="col-lg-6">
+								{% endif %}
+							
+						{% endfor %}
+						</div>
+					{% endfor %}
+					<input type="submit" value="save" name="save" class="btn-primary" style="float:right;margin:5px;border-radius:2px;">
+					</form>
+				</div>
+			</div>
+			<hr>
+		</div>
+	{% endblock %}
