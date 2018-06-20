@@ -1,7 +1,7 @@
 from django import forms
+from . import models
 
-
-class changeForm(forms.Form):
-    attributeName = forms.CharField(max_length=300)
-    oldValue = forms.CharField(max_length=300)
-    newValue = forms.CharField(max_length=300)
+class changeForm(forms.ModelForm):
+    class Meta:
+        model = models.change
+        fields = ['attributeName','oldValue','newValue']

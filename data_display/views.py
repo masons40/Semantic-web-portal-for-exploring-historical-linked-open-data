@@ -1,18 +1,27 @@
 import json
 import requests
-
+import datetime as dt
+from . import models
 from django.shortcuts import render
 from collections import defaultdict
-from data_display.forms import changeForm
+from . import forms
 from django.contrib.auth.decorators import login_required
 
 url = "http://exploreat.adaptcentre.ie/Questionnaire/1"
+
+#index currently works for everything except Question
 def index(request):
- 
+    if request.method == 'POST':
+        strUrl='http://exploreat.adaptcentre.ie/'
+        strUrl+=str(request.POST.get('typeValue'))
+        strUrl+='/'+str(request.POST.get('id'))
+        context = retData(strUrl)
+        return render(request, 'data_display/index.html',context)
     context = retData(url)
 
     return render(request, 'data_display/index.html',context)
-	
+
+# function used to create single words instead of long urls	
 def word(string,findCharacter,secondCharacter):
     char_position = 0
     i=0
@@ -28,22 +37,8 @@ def word(string,findCharacter,secondCharacter):
 def findName(stringUrl):
     position = stringUrl.rfind('/')
     return stringUrl[position+1:len(stringUrl)]
-
-def get(request):
-    form = retForm()
-    print(request.get)
-    return render(request,'data_display/index.html',{'form':form})
-
-def post(request):
-    print(request.post)
-    form = retForm(request.POST)
-    if form.is_valid():
-	    text = form.cleaned_data['post']
 	
-    print("hello")
-    print(text)
-    return render(request, 'data_display/index.html',context)
-	
+# function gets all the data from a given url, will create a type,value and shortname key. all keys have values of lists which contain the info from the url
 def retData(stringUrl):
    
     data={}
@@ -82,10 +77,10 @@ def retData(stringUrl):
 	
     data['id'] = findName(stringUrl)
     data['range'] = range(0,len(data)-2)
-    data['form'] = changeForm()
+    data['form'] = forms.changeForm()
     return data;
 			
-			
+#function to create the edit page	
 @login_required(login_url="account:login")	
 def edit(request):
     
@@ -93,15 +88,15 @@ def edit(request):
 
     return render(request, 'data_display/edit.html',context)
 			
-			
+#function saves the data that has been changed 			
 def changed(request):
     if request.method == 'POST':
-        form = changeForm(request.POST)
+        form = forms.changeForm(request.POST)
         if form.is_valid():
-            print(request.POST.get('attributeName'),request.POST.get('oldValue'),request.POST.get('newValue'))
-       
-	   
-        context = retData(url)
+            currentChange = form.save(commit=False)
+            currentChange.userId = request.user.id
+            currentChange.save()
+    context = retData(url)
         
     return render(request,'data_display/index.html',context)
 			

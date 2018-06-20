@@ -3,7 +3,7 @@
 {% load staticfiles %}
         {% block content %}
 		<div class="container mainBox" style="margin-top:50px;">
-			<form class="site-form" action="{% url 'account:login' %}" method="post">
+			<form action="{% url 'account:login' %}" method="post">
 			    {% csrf_token %}
 			    {{ form }}
 				<input type="submit" value="Login">
