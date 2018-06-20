@@ -5,4 +5,5 @@ app_name = 'data_display'
 urlpatterns = [
     path('', views.index, name='index'),
     path('edit', views.edit, name='edit'),
+	path('changed', views.changed,name='changed')
 ]

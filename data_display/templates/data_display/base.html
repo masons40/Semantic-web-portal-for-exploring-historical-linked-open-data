@@ -16,17 +16,23 @@
 	<body class="full-container" style="background-color:#f2f2f2"> 
 	    <header style="background-color:#15376d;" class="row">
 		    <div class="d-inline-block col-lg-4" style="margin:10px;" >
-			    <img src="{% static 'images/logo.png'%}" width="100px" height="100px"/>
+			    <img src="{% static 'images/logo2.png'%}" width="100px" height="100px"/>
 			</div>
 			<div class="d-inline-block col-lg-3" style="text-align:center;">
 			    <h1 style="margin-left:15px;font-family:Sunflower;color:white;">ADAPT CENTRE DCU</h1>
 			</div>
 			<div class="d-inline-block col-lg-4" style="text-align:center;padding:5px;">
 			    <ul>
-				    <li class="list-inline-item" style="float:right;">
+				    <li class="list-inline-item" style="float:right;margin:4px;">
 					    <form action="{% url 'account:logout' %}" method="post">
 						    {% csrf_token %}
 							<button type="submit" class="btn-primary">logout</button>
+						</form>
+					</li>
+					<li class="list-inline-item" style="float:right;margin:4px;">
+					    <form action="{% url 'account:login' %}" method="post">
+						    {% csrf_token %}
+							<button type="submit" class="btn-primary">login</button>
 						</form>
 					</li>
 				</ul>
@@ -49,32 +55,35 @@
 						<li class="list-inline-item .d-inline"><a style="color:white;" href="" >Cookie Policy</a></li>
 					</ul>
 				</div>
-				<div class="col-lg-7 d-inline-block" style="background-color:#15376d;">
-				    <div class="d-inline-block">
+			</div>
+            <hr>
+			<div class="row">
+			    <div class="col-lg-10 d-inline-block" style="background-color:#15376d;">
+				    <div class="d-inline-block" style="margin-left:30px;">
 					    <img src="{% static 'images/ies.png'%}"  />
 					</div>
-				    <div class="d-inline-block">
+				    <div class="d-inline-block" style="margin-left:30px;">
 					    <img src="{% static 'images/sfi.png'%}" />
 					</div>
-					<div class="d-inline-block">
+					<div class="d-inline-block" style="margin-left:30px;">
 					    <img src="{% static 'images/eur.png'%}" />
 					</div>
-					<div class="d-inline-block">
+					<div class="d-inline-block" style="margin-left:30px;">
 					    <img src="{% static 'images/tcd.png'%}" />
 					</div>
-					<div class="d-inline-block">
+					<div class="d-inline-block" style="margin-left:30px;">
 					    <img src="{% static 'images/dit.png'%}" />
 					</div>
-					<div class="d-inline-block">
+					<div class="d-inline-block" style="margin-left:30px;">
 					    <img src="{% static 'images/dcu.png'%}" />
 					</div>
-					<div class="d-inline-block">
+					<div class="d-inline-block" style="margin-left:30px;">
 					    <img src="{% static 'images/ucd.png'%}" />
 					</div>
 				</div>
 			</div>
-            <hr>
-			<!-- Social buttons -->
+			
+			<hr>
 			<ul class="list-unstyled list-inline text-center">
 				<li class="list-inline-item">
 					<a class="btn-floating btn-fb mx-1" style="color:white;"><i class="fa fa-facebook" title="Facebook" data-toggle="tooltip"> </i></a>

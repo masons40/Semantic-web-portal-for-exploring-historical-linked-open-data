@@ -8,30 +8,39 @@
 					<h2 style="color:white;">{{ name }} {{ id }}</h2>
 				</div>
 				<div class="col-lg-9" style="background-color:white;">
-					{% for firstIndex in range %}
-					<form action="" method="post">
-					    {% csrf_token %}
-						{% getListLength as listRange %}
-						<div class="row">
-						{% for secondIndex in listRange %}
-							
-								{% typeTest firstIndex secondIndex as condition%}
-								{% if condition %}
-									{% getData firstIndex 'value' secondIndex as urlData %}
-									{% getData firstIndex 'shortname' secondIndex as wordData %}
-									<a href="{{ urlData }}" style="font-family:Sunflower;" class="col-lg-6">{{wordData}}</a>
-								{% else %}
-									{% getData firstIndex 'shortname' secondIndex as wordData %}
-									<input type="text" style="font-family:Sunflower;" name="{{wordData}}" value="{{wordData}}" class="col-lg-6">
-								{% endif %}
-							
+                    <table class="table-striped" style="width:100%;">
+						<tbody>
+						{% for firstIndex in range %}
+							{% getListLength as listRange %}
+							<tr style="padding:5px;">
+							{% for secondIndex in listRange %}
+								
+									{% typeTest firstIndex secondIndex as condition%}
+									{% if condition %}
+										{% getData firstIndex 'value' secondIndex as urlData %}
+										{% getData firstIndex 'shortname' secondIndex as wordData %}
+										<td class="text-center" style="font-family:Sunflower;"><a href="{{ urlData }}" data-toggle="tooltip" data-html="true" title="{{ wordData}}">{{wordData}}</a></td>
+										<!--<a href="{{ urlData }}" style="font-family:Sunflower;" class="col-lg-6">{{wordData}}</a>-->
+									{% else %}
+										{% getData firstIndex 'shortname' secondIndex as wordData %}
+										<td class="text-center" style="font-family:Sunflower;">{{wordData}}</td>
+										<!--<input type="text" style="font-family:Sunflower;" name="{{wordData}}" value="{{wordData}}" class="col-lg-6">-->
+									{% endif %}
+								
+							{% endfor %}
+							</tr>
 						{% endfor %}
-						</div>
-					{% endfor %}
-					<input type="submit" value="save" name="save" class="btn-primary" style="float:right;margin:5px;border-radius:2px;">
-					</form>
+						</tbody>
+                    </table>
 				</div>
 			</div>
 			<hr>
+			<div class="row">
+			    <form action="{% url 'data_display:changed' %}" method="post">
+					{% csrf_token %}
+					{{form}}
+				    <input type="submit" name="submit">
+				</form>
+			</div>
 		</div>
 	{% endblock %}

@@ -1,5 +1,7 @@
 from django import forms
 
 
-class retForm(forms.Form):
-    post = forms.CharField()
+class changeForm(forms.Form):
+    attributeName = forms.CharField(max_length=300)
+    oldValue = forms.CharField(max_length=300)
+    newValue = forms.CharField(max_length=300)

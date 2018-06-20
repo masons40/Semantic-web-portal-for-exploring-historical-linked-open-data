@@ -3,12 +3,13 @@ import requests
 
 from django.shortcuts import render
 from collections import defaultdict
-from data_display.forms import retForm
+from data_display.forms import changeForm
+from django.contrib.auth.decorators import login_required
 
-
+url = "http://exploreat.adaptcentre.ie/Questionnaire/1"
 def index(request):
  
-    context = retData("http://exploreat.adaptcentre.ie/Source/1")
+    context = retData(url)
 
     return render(request, 'data_display/index.html',context)
 	
@@ -81,16 +82,26 @@ def retData(stringUrl):
 	
     data['id'] = findName(stringUrl)
     data['range'] = range(0,len(data)-2)
-
+    data['form'] = changeForm()
     return data;
 			
 			
-			
+@login_required(login_url="account:login")	
 def edit(request):
-    context = retData("http://exploreat.adaptcentre.ie/Source/1")
+    
+    context = retData(url)
 
     return render(request, 'data_display/edit.html',context)
 			
 			
-			
+def changed(request):
+    if request.method == 'POST':
+        form = changeForm(request.POST)
+        if form.is_valid():
+            print(request.POST.get('attributeName'),request.POST.get('oldValue'),request.POST.get('newValue'))
+       
+	   
+        context = retData(url)
+        
+    return render(request,'data_display/index.html',context)
 			

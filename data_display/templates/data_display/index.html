@@ -13,19 +13,18 @@
 						{% for firstIndex in range %}
 						
 						    {% getListLength as listRange %}
-							<tr>
+							<tr style="padding:5px;">
 						    {% for secondIndex in listRange %}
 							    
 								    {% typeTest firstIndex secondIndex as condition%}
 									{% if condition %}
 										{% getData firstIndex 'value' secondIndex as urlData %}
 										{% getData firstIndex 'shortname' secondIndex as wordData %}
-										<td class="text-center" style="font-family:Sunflower;"><a href="{{ urlData }}">{{wordData}}</a></td>
+										<td class="text-center" style="font-family:Sunflower;"><a href="{{ urlData }}" data-toggle="tooltip" data-html="true" title="{{ wordData}}">{{wordData}}</a></td>
 									{% else %}
 										{% getData firstIndex 'shortname' secondIndex as wordData %}
 										<td class="text-center" style="font-family:Sunflower;">{{wordData}}</td>
 									{% endif %}
-								
 							{% endfor %}
 							</tr>
 						{% endfor %}
@@ -34,6 +33,7 @@
 				</div>
 			</div>
 			<hr>
+			
 			<div class="row">
 				<div class="col-lg-12">
 				    <a href="{% url 'data_display:edit' %}" style="float:right;" ><i class="fa fa-wrench" ></i></a>
