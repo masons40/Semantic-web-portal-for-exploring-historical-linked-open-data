@@ -7,7 +7,7 @@ from collections import defaultdict
 from . import forms
 from django.contrib.auth.decorators import login_required
 
-url = "http://exploreat.adaptcentre.ie/Questionnaire/1"
+url = "http://exploreat.adaptcentre.ie/Lemma/1"
 
 #index currently works for everything except Question
 def index(request):
