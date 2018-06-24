@@ -7,8 +7,11 @@ from collections import defaultdict
 from . import forms
 from django.contrib.auth.decorators import login_required
 
-url = "http://exploreat.adaptcentre.ie/Lemma/1"
+import rdflib
+from rdflib.graph import Graph
 
+url = "http://exploreat.adaptcentre.ie/Lemma/1"
+names = ['Questionnaire','Question','PaperSlip','Source','Multimedia','PaperSlip Record','Lemma','Person']
 #index currently works for everything except Question
 def index(request):
     if request.method == 'POST':
@@ -51,18 +54,24 @@ def retData(stringUrl):
     type=[]
     value=[]
     shortname=[]
-    target=0
+    #target=0
     for binding in bindings:
         type.append(binding['p']['type'])
-        type.append(binding['o']['type'])
-        value.append(binding['p']['value'])
-        value.append(binding['o']['value'])
+        #if binding['p']['type'] == 'uri':
+            #iname = 'info'+word(binding['p']['value'],'#','/')
+            #data['iname'] = getInfo(binding['p']['value'])
         shortname.append(word(binding['p']['value'],'#','/'))
-        shortname.append(word(binding['o']['value'],'#','/'))
+        value.append(binding['p']['value'])
 		
-        if target < 1:
+        #if binding['o']['type'] == 'uri':
+            #iname = 'info'+word(binding['o']['value'],'#','/')
+            #data['iname'] = getInfo(binding['o']['value'])
+        type.append(binding['o']['type'])
+        value.append(binding['o']['value'])
+        shortname.append(word(binding['o']['value'],'#','/'))
+        
+        if word(binding['o']['value'],'#','/') in names:
             data['name'] = word(binding['o']['value'],'#','/')
-            target+=1
 
         data[i] = {
                 'type':type,
@@ -99,4 +108,28 @@ def changed(request):
     context = retData(url)
         
     return render(request,'data_display/index.html',context)
+						
+	
+def getInfo(urlData):
+
+    g = Graph()
+    g.parse(urlData)
+    subject = rdflib.term.URIRef(urlData)
+    qres = g.query(
+    """
+	   SELECT DISTINCT ?obj
+       WHERE {
+          ?subject rdfs:comment ?obj 
+       }
+    """
+    )
+    print('%s'%qres)
+    return 789	
+			
+			
+			
+			
+			
+			
+			
 			

@@ -4,12 +4,17 @@ from rdflib.graph import Graph
 def extraction(url):
     g = Graph()
     g.parse(url)
-    
-    for s,p,o in g:
-        print("subject",s)
-        print("predicate",p)
-        print("object",o)
-        print()
-    
+    subject = rdflib.term.URIRef(url)
+    qres = g.query(
+    """
+	   SELECT DISTINCT ?obj
+       WHERE {
+          ?subject rdfs:comment ?obj 
+       }
+    """
+    )
 		
-extraction("https://expoloreations4u.acdh.oeaw.ac.at/ontology/oldcan#Questionnaire")
+    for res in qres:
+        print("%s"%res)
+
+extraction("https://expoloreations4u.acdh.oeaw.ac.at/ontology/oldcan#title")

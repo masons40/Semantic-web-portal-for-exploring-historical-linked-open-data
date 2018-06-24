@@ -24,7 +24,7 @@
 										{% getData firstIndex 'value' secondIndex as urlData %}
 										{% getData firstIndex 'shortname' secondIndex as wordData %}
 										<!-- will create a link -->
-										<td class="text-center" style="font-family:Sunflower;"><a href="{{ urlData }}" data-toggle="tooltip" data-html="true" title="{{ wordData}}">{{wordData}}</a></td>
+										<td class="text-center" style="font-family:Sunflower;"><a href="{{ urlData }}" data-toggle="tooltip" data-html="true" title="{% getInfo urlData %}">{{wordData}}</a></td>
 									{% else %}
 										{% getData firstIndex 'shortname' secondIndex as wordData %}
 										<td class="text-center" style="font-family:Sunflower;">{{wordData}}</td>
