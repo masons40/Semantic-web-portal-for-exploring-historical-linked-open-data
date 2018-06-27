@@ -7,83 +7,196 @@
 	<head>
 		<title>Adapt LOD Project</title>
 		<meta lang="en">
-		<meta charset="utf-8"><link rel="shortcut icon" href="{% static 'images/logo.png' %}" />
+		<meta charset="utf-8"><link rel="shortcut icon" href="{% static 'images/logo.png'%}" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link href="https://fonts.googleapis.com/css?family=Sunflower:300" rel="stylesheet">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 		<link rel="stylesheet" href="{% static 'css/style.css' %}" type="css/text">
-	<body class="full-container" style="background-color:#f2f2f2"> 
-	   <header style="background-color:#15376d;" class="row">
-		    <div class="d-inline-block col-lg-4" style="margin:10px;" >
-			    <img src="{% static 'images/logo2.png'%}" width="100px" height="100px"/>
-			</div>
-			<div class="d-inline-block col-lg-3" style="text-align:center;">
-			    <h1 style="margin-left:15px;font-family:Sunflower;color:white;">ADAPT CENTRE DCU</h1>
-			</div>
-			<div class="d-inline-block col-lg-4" style="text-align:center;padding:5px;">
-			    <ul>
-				    <li class="list-inline-item" style="float:right;margin:4px;">
-					    <form action="{% url 'account:logout' %}">
-						    {% csrf_token %}
-							<button type="submit" class="btn-primary" style="font-family:Sunflower;color:white;">logout</button>
-						</form>
-					</li>
-					<li class="list-inline-item" style="float:right;margin:4px;">
+	</head>
+	
+	<body> 
+	    <nav class="navbar navbar-expand-md navbar-dark bg-dark ">
+			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<a class="navbar-brand" href="">
+				<img src="{% static 'images/logo.png'%}" width="30" height="30" class="d-inline-block align-top" alt="">
+				<span class="menu-collapsed">ExploreAt! DCU</span>
+			</a>
+			<a href="" data-toggle="tooltip" data-placement="bottom" title="Home">
+				<i class="fa fa-home mr-1" style="color:rgb(130,226,112);"></i>
+			</a>
+			<div class="collapse navbar-collapse" id="navbarNavDropdown">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active m-1">
 					    <form action="{% url 'account:login' %}" >
 						    {% csrf_token %}
-							<button type="submit" class="btn-primary" style="font-family:Sunflower;color:white;">login</button>
+							<button class="btn btn-default bg-light text-dark" ><i class="fa fa-sign-in mr-1"></i>Login</button>
 						</form>
 					</li>
+					<li class="nav-item active m-1">
+					    <form action="{% url 'account:logout' %}">
+						    {% csrf_token %}
+							<button class="btn btn-default bg-light text-dark" ><i class="fa fa-sign-out mr-1"></i>logout</button>
+						</form>
+					</li>
+
+					<!-- This menu is hidden in bigger devices with d-sm-none. 
+				   The sidebar isn't proper for smaller screens imo, so this dropdown menu can keep all the useful sidebar itens exclusively for smaller screens  -->
+					<li class="nav-item dropdown d-sm-block d-md-none">
+						<a class="nav-link dropdown-toggle" href="#" id="smallerscreenmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  Menu
+						</a>
+						<div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
+							<a class="dropdown-item" href="data_display/Questionnaire">Questionnaires</a>
+							<a class="dropdown-item" href="data_display/Question">Questions</a>
+							<a class="dropdown-item" href="data_display/Source">Sources</a>
+							<a class="dropdown-item" href="data_display/Multimedia">Multimedias</a>
+							<a class="dropdown-item" href="data_display/PaperSlip">PaperSlips</a>
+							<a class="dropdown-item" href="data_display/PaperSlip Record">PaperSlip Records</a>
+							<a class="dropdown-item" href="data_display/Lemma">Lemmas</a>
+							<a class="dropdown-item" href="data_display/Person">Persons</a>
+						</div>
+					</li>
+					<!-- Smaller devices menu END -->
+
 				</ul>
 			</div>
-		</header>
-		
-		{% block content %}
-		
-		
-		{% endblock %}
-		
-		<footer class="page-footer font-small pt-4 mt-4" style="background-color:#15376d;box-shadow:0 0 5px 2px #15376d;">
-		
-		    <div class="row">
-			    <div class="col-lg-5 .d-inline-block" style="background-color:#15376d;">
-				    <ul >
-					    <li class="list-inline-item .d-inline"><a style="color:white;" href="" >Contact Us</a></li>
-						<li class="list-inline-item .d-inline"><a style="color:white;" href="" >Terms & Conditions</a></li>
-						<li class="list-inline-item .d-inline"><a style="color:white;" href="" >Privacy Policy</a></li>
-						<li class="list-inline-item .d-inline"><a style="color:white;" href="" >Cookie Policy</a></li>
-					</ul>
-				</div>
-			</div>
-            <hr>
-			<div class="row">
-			    <div class="col-lg-10 d-inline-block" style="background-color:#15376d;">
-				    <div class="d-inline-block" style="margin-left:30px;">
-					    <img src="{% static 'images/ies.png'%}"  />
-					</div>
-				    <div class="d-inline-block" style="margin-left:30px;">
-					    <img src="{% static 'images/sfi.png'%}" />
-					</div>
-					<div class="d-inline-block" style="margin-left:30px;">
-					    <img src="{% static 'images/eur.png'%}" />
-					</div>
-					<div class="d-inline-block" style="margin-left:30px;">
-					    <img src="{% static 'images/tcd.png'%}" />
-					</div>
-					<div class="d-inline-block" style="margin-left:30px;">
-					    <img src="{% static 'images/dit.png'%}" />
-					</div>
-					<div class="d-inline-block" style="margin-left:30px;">
-					    <img src="{% static 'images/dcu.png'%}" />
-					</div>
-					<div class="d-inline-block" style="margin-left:30px;">
-					    <img src="{% static 'images/ucd.png'%}" />
-					</div>
-				</div>
+		</nav>
+
+		<div class="row mt-3">
+			<!-- Sidebar -->
+			<div id="sidebar-container" class="sidebar-expanded d-none d-md-block col-2 col-md-3">
+				<ul class="list-group sticky-top sticky-offset">
+				    <!-- Questionnaire Box -->
+					<a href="data_display/Questionnaire" class="bg-light list-group-item list-group-item-action flex-column align-items-start" value="http://exploreat.adaptcentre.ie/Questionnaire">
+						Questionnaires
+					</a>
+					<!-- END Questionnaire Box -->
+					
+					<!-- Question Box -->
+					<a href="data_display/Question" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+						Questions
+					</a>
+					<!-- END Question Box -->
+					
+					<!-- Source Box -->
+					<a href="data_display/Source" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+						Sources
+					</a>
+					<!-- END Source Box -->
+					
+					<!-- Multimedia Box -->
+					<a href="data_display/Multimedia" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+						Multimedias
+					</a>
+					<!-- END Multimedia Box -->
+					
+					<!-- PaperSlip Box -->
+					<a href="data_display/PaperSlip" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+						PaperSlips
+					</a>
+					<!-- END PaperSlip Box -->
+					
+					<!-- PaperSlipRecord Box -->
+					<a href="data_display/PaperSlipRecord" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+						PaperSlip Records
+					</a>
+					<!-- END PaperSlip Record Box -->
+					
+					<!-- Lemma Box -->
+					<a href="data_display/Lemma" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+						Lemmas
+					</a>
+					<!-- END Lemma Box -->
+					
+					<!-- Person Box -->
+					<a href="data_display/Person" class="bg-light list-group-item list-group-item-action flex-column align-items-start" id="Person">
+						Person
+					</a>
+					<!-- END Person Box -->
+					
+					
+					<!-- Logo -->
+					<li class="list-group-item logo-separator d-flex justify-content-center">
+						<img src="{% static 'images/logo.png'%}" width="30" height="30">
+					</li>
+				</ul>
+				<!-- List Group END-->
 			</div>
 			
-			<hr>
+			{% block content%}
+			
+			{% endblock %}
+
+		</div>
+		
+		<!-- Footer -->
+		<footer class="page-footer font-small bg-dark pt-4 mt-4">
+
+			<!-- Footer Links -->
+			<div class="container-fluid text-center text-md-left">
+
+				<!-- Grid row -->
+				<div class="row">
+
+					<!-- Grid column -->
+					<div class="col-md-10 mt-md-0 mt-3 d-none d-md-block">
+						<div class="d-inline-block ml-3" >
+							<img src="{% static 'images/ies.png'%}"  />
+						</div>
+						<div class="d-inline-block ml-3">
+							<img src="{% static 'images/sfi.png'%}" />
+						</div>
+						<div class="d-inline-block ml-3">
+							<img src="{% static 'images/eur.png'%}" />
+						</div>
+						<div class="d-inline-block ml-3">
+							<img src="{% static 'images/tcd.png'%}" />
+						</div>
+						<div class="d-inline-block ml-3">
+							<img src="{% static 'images/dit.png'%}" />
+						</div>
+						<div class="d-inline-block ml-3">
+							<img src="{% static 'images/dcu.png'%}" />
+						</div>
+						<div class="d-inline-block ml-3">
+							<img src="{% static 'images/ucd.png'%}" />
+						</div>
+					</div>
+					<!-- Grid column -->
+
+					<hr class="clearfix w-100 d-md-none pb-3">
+
+					<!-- Grid column -->
+					<div class="col-md-2 mb-md-0 mb-3">
+
+						<!-- Links -->
+						<ul class="list-unstyled">
+							<li>
+								<a class="text-light" href="http://exploreat.adaptcentre.ie/#Semantics">Semantics</a>
+							</li>
+							<li>
+								<a class="text-light" href="http://exploreat.adaptcentre.ie">ExploreAt!</a>
+							</li>
+							<li>
+								<a class="text-light" href="http://exploreat.adaptcentre.ie/#people">People</a>
+							</li>
+							<li>
+								<a class="text-light" href="http://exploreat.adaptcentre.ie/#about">About</a>
+							</li>
+						</ul>
+
+					</div>
+					<!-- Grid column -->
+
+				</div>
+				<!-- Grid row -->
+
+			</div>
+			
 			<ul class="list-unstyled list-inline text-center">
 				<li class="list-inline-item">
 					<a class="btn-floating btn-fb mx-1" style="color:white;"><i class="fa fa-facebook" title="Facebook" data-toggle="tooltip"> </i></a>
@@ -98,20 +211,23 @@
 					<a class="btn-floating btn-li mx-1" style="color:white;"><i class="fa fa-linkedin" title="Linkedin" data-toggle="tooltip"> </i></a>
 				</li>
 			</ul>
-			<!-- Social buttons -->
-
+			
 			<!-- Copyright -->
-			<div style="color:white;" class="footer-copyright text-center py-3">© 2018 Copyright:
-				<h4 style="color:white;">ADAPT Research Centre</h4>
+			<div class="footer-copyright text-center py-3 text-light">© 2018 Copyright:
+				<a href="http://exploreat.adaptcentre.ie" class="text-light"> ExploreAt! DCU</a>
 			</div>
-			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-			<script type="text/javascript">
-			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();   
-			});
-			</script>
-        </footer>
+			<!-- Copyright -->
+
+		</footer>
+		<!-- Footer -->
+		
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$('[data-toggle="tooltip"]').tooltip();   
+		});
+		</script>
 	</body>
 </html>

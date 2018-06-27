@@ -3,69 +3,24 @@
 {% load staticfiles %}
 {% block content %}
 
-		<div class="container mainBox" style="margin-top:50px;">
-		    <div class="row">
-			    <div class="col-lg-12" style="background-color:#68778e;text-align:center;">
-					<h2 style="color:white;">{{ name }} {{ id }}</h2>
-				</div>
-			</div>
-			<div class="row" style="border:1px solid #d1d1d1;box-shadow:0 0 1px 1px #d1d1d1">
-				<div class="col-lg-12" style="background-color:white;">
-				    <table class="table-striped" style="width:100%;padding:5px;">
-					    <tbody>
-						{% for firstIndex in range %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
-						
-						    {% getListLength as listRange %} <!-- templatetag(getListLength) returns listRange as a range datatype of 0-2 -->
-							<tr style="padding:5px;">
-						    {% for secondIndex in listRange %} 
-							        <!-- this for loop reads the first value and determines if it is a 'uri' , if true then condition is true -->
-								    {% typeTest firstIndex secondIndex as condition%}
-									{% if condition %}
-										{% getData firstIndex 'value' secondIndex as urlData %}
-										{% getData firstIndex 'shortname' secondIndex as wordData %}
-										<!-- will create a link -->
-										<td class="text-center" style="font-family:Sunflower;"><a href="{{ urlData }}" data-toggle="tooltip" data-html="true" title="{% getInfo urlData %}">{{wordData}}</a></td>
-									{% else %}
-										{% getData firstIndex 'shortname' secondIndex as wordData %}
-										<td class="text-center" style="font-family:Sunflower;">{{wordData}}</td>
-									{% endif %}
-							{% endfor %}
-							</tr>
-						{% endfor %}
-					    </tbody>
-                    </table>
-				</div>
-			</div>
-			<hr>
-			
+		<div class="col-10 col-md-9">
 			<div class="row">
-				<div class="col-lg-12">
-				    <a href="{% url 'data_display:edit' %}" style="float:right;" data-toggle="tooltip" data-html="true" title="Change Values"><i class="fa fa-wrench" ></i></a>
-				</div>
+			        {% getRange True 0 as range %}
+					{% for i in range %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
+					    <div class="card col-sm-10 col-md-3 col-lg-2 m-3 p-0 m-1">
+							<div class="card-header bg-dark text-light">{% getName i %}</div>
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item text-black-50">Title</li>
+								<li class="list-group-item text-black-50">Type</li>
+								<li class="list-group-item text-black-50">Author</li>
+							</ul>
+							<a href="data_display/infoDisplay/{{ type }}/{{ id }}" class="btn btn-primary m-2">View more</a>
+							<div>
+								<a href="data_diplay/edit" data-toggle="tooltip"  data-placement="right" title="Edit"><i class="fa fa-wrench m-2"></i></a>
+							</div>
+						</div>
+					{% endfor %}
 			</div>
-			
-			<hr>
-			<div class="row">
-				<div class="col-lg-9">
-				    <!-- simple form to retrieve data from the api -->
-				    <form method="POST" action="{% url 'data_display:index' %}">
-					    {% csrf_token %}
-					    <select class="form-check-inline" style="border:1px solid #d1d1d1;box-shadow:0 0 1px 1px #d1d1d1" name="typeValue">
-						    <option value="Questionnaire">Questionnaire</option>
-							<option value="Question">Question</option>
-							<option value="Source">Source</option>
-							<option value="Multimedia">Multimedia</option>
-							<option value="PaperSlip">PaperSlip</option>
-							<option value="PaperSlipRecord">PaperSlip Record</option>
-							<option value="Lemma">Lemmas</option>
-							<option value="Person">Person</option>
-						</select>
-						<input class="form-check-inline" type="text" name="id" placeholder="Number" style="border:1px solid #d1d1d1;box-shadow:0 0 1px 1px #d1d1d1">
-						<button class="btn-primary form-check-inline" type="submit" style="border-radius:3px;font-family:Sunflower;">Retrieve</button>
-
-					</form>
-				</div>
-			</div>
-
+		
 		</div>
 {% endblock %}

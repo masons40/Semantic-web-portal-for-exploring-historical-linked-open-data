@@ -14,6 +14,18 @@ def getData(context,i,word,arg):
     return context[i][word][arg]
 
 @register.simple_tag(takes_context=True)	
+def getName(context,i):
+    return displayShortName(context[i],'/')
+
+def displayShortName(string,findCharacter):
+    position = string.rfind(findCharacter)
+    position += 1
+    if position == -1:
+        return string
+    return string[position:len(string)]
+	
+	
+@register.simple_tag(takes_context=True)	
 def getLength(context):
     print(context)
     length = 0
@@ -44,3 +56,9 @@ def getInfo(urlData):
     )
 		
     return 789
+	
+	
+@register.simple_tag(takes_context=True)
+def getRange(context,boolForExtra,startNum):
+    
+    return range(startNum,5)

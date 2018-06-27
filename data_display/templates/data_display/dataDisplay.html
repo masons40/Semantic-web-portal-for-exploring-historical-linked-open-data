@@ -1,0 +1,46 @@
+{% extends 'data_display/base.html' %}
+{% load search_filter %}
+{% load staticfiles %}
+{% block content %}
+
+		<div class="col-7 col-md-7">
+			<div class="container mr-2">
+				<table class="table table-bordered">
+					<tbody>
+					<thead class="thead-dark">
+						<tr>
+						  <th scope="col">{{name}} {{id}}</th>
+						</tr>
+					</thead>
+					{% for firstIndex in range %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
+					
+						{% getListLength as listRange %} <!-- templatetag(getListLength) returns listRange as a range datatype of 0-2 -->
+						<tr>
+						{% for secondIndex in listRange %} 
+								<!-- this for loop reads the first value and determines if it is a 'uri' , if true then condition is true -->
+								{% typeTest firstIndex secondIndex as condition%}
+								{% if condition %}
+									{% getData firstIndex 'value' secondIndex as urlData %}
+									{% getData firstIndex 'shortname' secondIndex as wordData %}
+									<!-- will create a link -->
+									<td><a href="{{ urlData }}" data-toggle="tooltip" data-html="true" title="{% getInfo urlData %}">{{wordData}}</a></td>
+								{% else %}
+									{% getData firstIndex 'shortname' secondIndex as wordData %}
+									<td>{{wordData}}</td>
+								{% endif %}
+						{% endfor %}
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+				
+				<form action="{% url 'data_display:changed' %}" method="post">
+					{% csrf_token %}
+					{{form}}
+				    <input type="submit" name="submit">
+					<input type="hidden" name="contextValues" value="{{ context }}">
+				    <button class="btn btn-primary" type="button">Make Edit</button>
+				</form>
+			</div>
+		</div>
+{% endblock %}

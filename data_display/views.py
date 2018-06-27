@@ -10,25 +10,38 @@ from django.contrib.auth.decorators import login_required
 import rdflib
 from rdflib.graph import Graph
 
-url = "http://exploreat.adaptcentre.ie/Lemma/1"
+url = "http://exploreat.adaptcentre.ie/"
 names = ['Questionnaire','Question','PaperSlip','Source','Multimedia','PaperSlip Record','Lemma','Person']
 #index currently works for everything except Question
-def index(request):
+def index(request,type=None):
     if request.method == 'POST':
         strUrl='http://exploreat.adaptcentre.ie/'
         strUrl+=str(request.POST.get('typeValue'))
         strUrl+='/'+str(request.POST.get('id'))
         context = retData(strUrl)
         return render(request, 'data_display/index.html',context)
-    context = retData(url)
+    if type != None:
+        newUrl = url + type
+        print(newUrl)
+        #context = getAllInfo(newUrl)
+        #return render(request, 'data_display/index.html',context)
+       
+    
+    return render(request, 'data_display/base.html')
+	
+def infoDisplay(request,type,id):
+    if request.method == 'POST':
+        strUrl='http://exploreat.adaptcentre.ie/'+type+'/'+id
+        strUrl+=str(request.POST.get('typeValue'))
+        strUrl+='/'+str(request.POST.get('id'))
+        context = retData(strUrl)
+        return render(request, 'data_display/index.html',context)
+    context = retData('http://exploreat.adaptcentre.ie/'+type+'/'+id)
 
-    return render(request, 'data_display/index.html',context)
+    return render(request, 'data_display/dataDisplay.html',context)
 
 # function used to create single words instead of long urls	
 def word(string,findCharacter,secondCharacter):
-    char_position = 0
-    i=0
-  
     if string.rfind(findCharacter) == -1:
         position = string.rfind(secondCharacter)
     else:
@@ -37,6 +50,7 @@ def word(string,findCharacter,secondCharacter):
     if position == -1:
         return string
     return string[position:len(string)]
+	
 def findName(stringUrl):
     position = stringUrl.rfind('/')
     return stringUrl[position+1:len(stringUrl)]
@@ -87,8 +101,10 @@ def retData(stringUrl):
     data['id'] = findName(stringUrl)
     data['range'] = range(0,len(data)-2)
     data['form'] = forms.changeForm()
+
     return data;
 			
+
 #function to create the edit page	
 @login_required(login_url="account:login")	
 def edit(request):
@@ -96,7 +112,32 @@ def edit(request):
     context = retData(url)
 
     return render(request, 'data_display/edit.html',context)
+	
+
+def getAllInfo(url):
+
+    data={}
+    response = requests.get(url)
+    todos = json.loads(response.text)
+    i=0
+    index = 0
+    for i in range(0,len(todos)):
+        if checkDataContained(data,todos[i]['s']['value']) != True:
+            data[index] = todos[i]['s']['value']
+            index += 1
 			
+    return data
+	
+	
+def checkDataContained(data,value):
+    i=0;
+    for k,v in data.items():
+        if value == v:
+            return True
+            
+    return False
+
+	
 #function saves the data that has been changed 			
 def changed(request):
     if request.method == 'POST':
@@ -105,7 +146,7 @@ def changed(request):
             currentChange = form.save(commit=False)
             currentChange.userId = request.user.id
             currentChange.save()
-    context = retData(url)
+    context = retData('http://exploreat.adaptcentre.ie/Questionnaire/1')
         
     return render(request,'data_display/index.html',context)
 						
