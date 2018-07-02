@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import change
+from .models import changes
 
 # Register your models here.
-admin.site.register(change)
+admin.site.register(changes)

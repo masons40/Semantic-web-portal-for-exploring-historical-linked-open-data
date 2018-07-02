@@ -2,45 +2,43 @@
 {% load search_filter %}
 {% load staticfiles %}
         {% block content %}
-		<div class="container mainBox" style="margin-top:50px;">
-			<div class="row" style="border:1px solid #d1d1d1;box-shadow:0 0 1px 1px #d1d1d1">
-				<div class="col-lg-3" style="background-color:#68778e">
-					<h2 style="color:white;">{{ name }} {{ id }}</h2>
-				</div>
-				<div class="col-lg-9" style="background-color:white;">
-                    <table class="table-striped" style="width:100%;">
-						<tbody>
-						{% for firstIndex in range %}
-							{% getListLength as listRange %}
-							<tr style="padding:5px;">
-							{% for secondIndex in listRange %}
-								
-									{% typeTest firstIndex secondIndex as condition%}
-									{% if condition %}
-										{% getData firstIndex 'value' secondIndex as urlData %}
-										{% getData firstIndex 'shortname' secondIndex as wordData %}
-										<td class="text-center" style="font-family:Sunflower;"><a href="{{ urlData }}" data-toggle="tooltip" data-html="true" title="{{ wordData}}">{{wordData}}</a></td>
-										<!--<a href="{{ urlData }}" style="font-family:Sunflower;" class="col-lg-6">{{wordData}}</a>-->
-									{% else %}
-										{% getData firstIndex 'shortname' secondIndex as wordData %}
-										<td class="text-center" style="font-family:Sunflower;">{{wordData}}</td>
-										<!--<input type="text" style="font-family:Sunflower;" name="{{wordData}}" value="{{wordData}}" class="col-lg-6">-->
-									{% endif %}
-								
-							{% endfor %}
-							</tr>
+		<div class="col-7 col-md-7">
+			<div class="container mr-2">
+				<table class="table table-bordered">
+					<tbody>
+					<thead class="thead-dark">
+						<tr>
+						  <th scope="col">{{name}} {{id}}</th>
+						</tr>
+					</thead>
+					{% for firstIndex in range %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
+					
+						{% getListLength as listRange %} <!-- templatetag(getListLength) returns listRange as a range datatype of 0-2 -->
+						<tr>
+						{% for secondIndex in listRange %} 
+								<!-- this for loop reads the first value and determines if it is a 'uri' , if true then condition is true -->
+								{% typeTest firstIndex secondIndex as condition%}
+								{% if condition %}
+									{% getData firstIndex 'value' secondIndex as urlData %}
+									{% getData firstIndex 'shortname' secondIndex as wordData %}
+									<!-- will create a link -->
+									<td><a href="{{ urlData }}" data-toggle="tooltip" data-html="true" title="{% extraction urlData %}">{{wordData}}</a></td>
+								{% else %}
+									{% getData firstIndex 'shortname' secondIndex as wordData %}
+									<td>{{wordData}}</td>
+								{% endif %}
 						{% endfor %}
-						</tbody>
-                    </table>
-				</div>
-			</div>
-			<hr>
-			<div class="row">
-			    <form action="{% url 'data_display:changed' %}" method="post">
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+				
+				<form action="{% url 'data_display:changed' %}" method="post">
 					{% csrf_token %}
 					{{form}}
 				    <input type="submit" name="submit">
 					<input type="hidden" name="contextValues" value="{{ context }}">
+				    <button class="btn btn-primary" type="button">Make Edit</button>
 				</form>
 			</div>
 		</div>

@@ -4,5 +4,5 @@ from . import models
 class changeForm(forms.ModelForm):
     
     class Meta:
-        model = models.change
+        model = models.changes
         fields = ['attributeName','oldValue','newValue']

@@ -23,7 +23,7 @@
 									{% getData firstIndex 'value' secondIndex as urlData %}
 									{% getData firstIndex 'shortname' secondIndex as wordData %}
 									<!-- will create a link -->
-									<td><a href="{{ urlData }}" data-toggle="tooltip" data-html="true" title="{% getInfo urlData %}">{{wordData}}</a></td>
+									<td><a href="{{ urlData }}" data-toggle="tooltip" data-html="true" title="{% extraction urlData %}">{{wordData}}</a></td>
 								{% else %}
 									{% getData firstIndex 'shortname' secondIndex as wordData %}
 									<td>{{wordData}}</td>
@@ -34,12 +34,16 @@
 					</tbody>
 				</table>
 				
-				<form action="{% url 'data_display:changed' %}" method="post">
+				<form action="{% url 'data_display:changed' id=564 %}" method="post">
 					{% csrf_token %}
-					{{form}}
-				    <input type="submit" name="submit">
-					<input type="hidden" name="contextValues" value="{{ context }}">
-				    <button class="btn btn-primary" type="button">Make Edit</button>
+					{% for field in form %}
+					    <div class="form-group">
+							<label >{{ field.html_name }}</label>
+							<input type="text" class="form-control" id="{{ field.id_for_label }}" aria-describedby="emailHelp">
+							{{ field.errors}}
+						</div>
+					{% endfor %}
+				    <button class="btn btn-primary" type="submit">Make Edit</button>
 				</form>
 			</div>
 		</div>

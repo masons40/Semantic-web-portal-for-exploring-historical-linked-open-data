@@ -37,3 +37,5 @@ def logout_view(request):
 		
     return redirect('data_display:index')
 		
+def index(request):
+    return redirect('data_display:index')

@@ -6,14 +6,16 @@ from django.shortcuts import render
 from collections import defaultdict
 from . import forms
 from django.contrib.auth.decorators import login_required
+from data_display.models import changes
 
 import rdflib
 from rdflib.graph import Graph
 
-url = "http://exploreat.adaptcentre.ie/"
+url = "http://exploreat.adaptcentre.ie/Questionnaire/1"
 names = ['Questionnaire','Question','PaperSlip','Source','Multimedia','PaperSlip Record','Lemma','Person']
 #index currently works for everything except Question
 def index(request,type=None):
+    url2 = "http://exploreat.adaptcentre.ie/"
     if request.method == 'POST':
         strUrl='http://exploreat.adaptcentre.ie/'
         strUrl+=str(request.POST.get('typeValue'))
@@ -21,15 +23,17 @@ def index(request,type=None):
         context = retData(strUrl)
         return render(request, 'data_display/index.html',context)
     if type != None:
-        newUrl = url + type
-        print(newUrl)
-        #context = getAllInfo(newUrl)
-        #return render(request, 'data_display/index.html',context)
+        newUrl = url2 + type
+
+        context = getAllInfo(newUrl)
+        return render(request, 'data_display/index.html',context)
        
     
     return render(request, 'data_display/base.html')
 	
 def infoDisplay(request,type,id):
+    defaultStrUrl='http://exploreat.adaptcentre.ie/'
+
     if request.method == 'POST':
         strUrl='http://exploreat.adaptcentre.ie/'+type+'/'+id
         strUrl+=str(request.POST.get('typeValue'))
@@ -68,18 +72,11 @@ def retData(stringUrl):
     type=[]
     value=[]
     shortname=[]
-    #target=0
     for binding in bindings:
         type.append(binding['p']['type'])
-        #if binding['p']['type'] == 'uri':
-            #iname = 'info'+word(binding['p']['value'],'#','/')
-            #data['iname'] = getInfo(binding['p']['value'])
         shortname.append(word(binding['p']['value'],'#','/'))
         value.append(binding['p']['value'])
 		
-        #if binding['o']['type'] == 'uri':
-            #iname = 'info'+word(binding['o']['value'],'#','/')
-            #data['iname'] = getInfo(binding['o']['value'])
         type.append(binding['o']['type'])
         value.append(binding['o']['value'])
         shortname.append(word(binding['o']['value'],'#','/'))
@@ -103,17 +100,7 @@ def retData(stringUrl):
     data['form'] = forms.changeForm()
 
     return data;
-			
-
-#function to create the edit page	
-@login_required(login_url="account:login")	
-def edit(request):
-    
-    context = retData(url)
-
-    return render(request, 'data_display/edit.html',context)
 	
-
 def getAllInfo(url):
 
     data={}
@@ -121,13 +108,37 @@ def getAllInfo(url):
     todos = json.loads(response.text)
     i=0
     index = 0
+    
     for i in range(0,len(todos)):
         if checkDataContained(data,todos[i]['s']['value']) != True:
             data[index] = todos[i]['s']['value']
             index += 1
-			
+	
     return data
 	
+"""
+def getInfoById(url):
+
+    data={}
+    responseList=[]
+    for i in range(1,10):
+        response = requests.get(url+'/'+str(i))
+        responseList.append(response.text)
+    print(responseList)
+    
+	todos = json.loads(responseList)
+    i=0
+    index = 0
+    
+	for url in 
+	
+    for i in range(0,len(todos)):
+        if checkDataContained(data,todos[i]['s']['value']) != True:
+            data[index] = todos[i]['s']['value']
+            index += 1
+	
+    return data
+"""
 	
 def checkDataContained(data,value):
     i=0;
@@ -138,34 +149,33 @@ def checkDataContained(data,value):
     return False
 
 	
-#function saves the data that has been changed 			
-def changed(request):
-    if request.method == 'POST':
-        form = forms.changeForm(request.POST)
-        if form.is_valid():
-            currentChange = form.save(commit=False)
-            currentChange.userId = request.user.id
-            currentChange.save()
-    context = retData('http://exploreat.adaptcentre.ie/Questionnaire/1')
+#function saves the data that has been changed 		
+@login_required(login_url="account:login")		
+def changed(request,id):
+    print(request.POST.get('attributeName'))
+    print(request.POST.get('oldValue'))
+    print(request.POST.get('newValue'))
+    #context = retData('http://exploreat.adaptcentre.ie/Questionnaire/1')
         
-    return render(request,'data_display/index.html',context)
+    return render(request,'data_display/base.html')
 						
 	
 def getInfo(urlData):
-
     g = Graph()
-    g.parse(urlData)
-    subject = rdflib.term.URIRef(urlData)
+    g.parse(url)
+	
     qres = g.query(
     """
 	   SELECT DISTINCT ?obj
-       WHERE {
-          ?subject rdfs:comment ?obj 
+       WHERE {<"""+
+        url + """> rdfs:comment ?obj 
        }
     """
     )
-    print('%s'%qres)
-    return 789	
+    comment=''
+    for res in qres:
+        comment+=str(res)
+    return comment
 			
 			
 			

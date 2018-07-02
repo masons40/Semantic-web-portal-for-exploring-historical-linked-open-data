@@ -21,11 +21,11 @@
 				<span class="navbar-toggler-icon"></span>
 			</button>
 
-			<a class="navbar-brand" href="">
+			<a class="navbar-brand" href="{% url 'account:index' %}">
 				<img src="{% static 'images/logo.png'%}" width="30" height="30" class="d-inline-block align-top" alt="">
 				<span class="menu-collapsed">ExploreAt! DCU</span>
 			</a>
-			<a href="" data-toggle="tooltip" data-placement="bottom" title="Home">
+			<a href="{% url 'account:index' %}" data-toggle="tooltip" data-placement="bottom" title="Home">
 				<i class="fa fa-home mr-1" style="color:rgb(130,226,112);"></i>
 			</a>
 			<div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -50,8 +50,8 @@
 						  Menu
 						</a>
 						<div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
-							<a class="dropdown-item" href="data_display/Questionnaire">Questionnaires</a>
-							<a class="dropdown-item" href="data_display/Question">Questions</a>
+							<a class="dropdown-item" href="Questionnaire">Questionnaires</a>
+							<a class="dropdown-item" href="Question">Questions</a>
 							<a class="dropdown-item" href="data_display/Source">Sources</a>
 							<a class="dropdown-item" href="data_display/Multimedia">Multimedias</a>
 							<a class="dropdown-item" href="data_display/PaperSlip">PaperSlips</a>
@@ -71,49 +71,49 @@
 			<div id="sidebar-container" class="sidebar-expanded d-none d-md-block col-2 col-md-3">
 				<ul class="list-group sticky-top sticky-offset">
 				    <!-- Questionnaire Box -->
-					<a href="data_display/Questionnaire" class="bg-light list-group-item list-group-item-action flex-column align-items-start" value="http://exploreat.adaptcentre.ie/Questionnaire">
+					<a href="Questionnaire" class="bg-light list-group-item list-group-item-action flex-column align-items-start" value="http://exploreat.adaptcentre.ie/Questionnaire">
 						Questionnaires
 					</a>
 					<!-- END Questionnaire Box -->
 					
 					<!-- Question Box -->
-					<a href="data_display/Question" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+					<a href="Question" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
 						Questions
 					</a>
 					<!-- END Question Box -->
 					
 					<!-- Source Box -->
-					<a href="data_display/Source" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+					<a href="Source" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
 						Sources
 					</a>
 					<!-- END Source Box -->
 					
 					<!-- Multimedia Box -->
-					<a href="data_display/Multimedia" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+					<a href="Multimedia" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
 						Multimedias
 					</a>
 					<!-- END Multimedia Box -->
 					
 					<!-- PaperSlip Box -->
-					<a href="data_display/PaperSlip" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+					<a href="PaperSlip" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
 						PaperSlips
 					</a>
 					<!-- END PaperSlip Box -->
 					
 					<!-- PaperSlipRecord Box -->
-					<a href="data_display/PaperSlipRecord" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+					<a href="PaperSlipRecord" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
 						PaperSlip Records
 					</a>
 					<!-- END PaperSlip Record Box -->
 					
 					<!-- Lemma Box -->
-					<a href="data_display/Lemma" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+					<a href="Lemma" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
 						Lemmas
 					</a>
 					<!-- END Lemma Box -->
 					
 					<!-- Person Box -->
-					<a href="data_display/Person" class="bg-light list-group-item list-group-item-action flex-column align-items-start" id="Person">
+					<a href="Person" class="bg-light list-group-item list-group-item-action flex-column align-items-start" id="Person">
 						Person
 					</a>
 					<!-- END Person Box -->
