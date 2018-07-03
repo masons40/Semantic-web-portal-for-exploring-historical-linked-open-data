@@ -5,7 +5,24 @@
 
 		<div class="col-10 col-md-9">
 			<div class="row">
-			        
+				<form method="post" action="" >
+				    <div class="form-group d.inline-block">
+					    <select name="type" class="form-control">
+							<option value="volvo">Questionnaire</option>
+							<option value="saab">Question</option>
+							<option value="fiat">Source</option>
+							<option value="audi">Multimedia</option>
+							<option value="volvo">PaperSlip</option>
+							<option value="saab">PaperSlipRecord</option>
+							<option value="fiat">Lemma</option>
+							<option value="audi">Person</option>
+						</select>
+					    <input type="text" class="form-control" name="id" >
+					    <button type="submit" class="btn btn-primary">Go</button>
+					</div>
+				</form>
+			</div>
+			<div class="row">
 					{% for i in range %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
 					    <div class="card col-sm-10 col-md-3 col-lg-2 m-3 p-0 m-1">
 							<div class="card-header bg-dark text-light">{% getTypeForIndex i False%}</div>

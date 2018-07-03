@@ -17,7 +17,7 @@ names = ['Questionnaire','Question','PaperSlip','Source','Multimedia','PaperSlip
 #index currently works for everything except Question
 def index(request,type=None,amount=None,offset=None):
     url2 = "http://exploreat.adaptcentre.ie/"
-    print(amount, offset)
+    
     if request.method == 'POST':
         strUrl='http://exploreat.adaptcentre.ie/'
         strUrl+=str(request.POST.get('typeValue'))
@@ -105,7 +105,7 @@ def retData(stringUrl):
 	
 def getAllInfo(url,amount,offset):
     newUrl = url + '/' + str(amount) + '/' + str(offset)
-    print(newUrl)
+    
     data={}
   
     response = requests.get(newUrl)
@@ -122,7 +122,7 @@ def getAllInfo(url,amount,offset):
             index += 1
     
     data['range'] = range(int(offset)-1,index)
-    print(data)
+
     return data
 	
 """
@@ -161,8 +161,8 @@ def checkDataContained(data,value):
 #function saves the data that has been changed 		
 @login_required(login_url="account:login")		
 def changed(request,id):
-    
-    for key,value in request.items():
+    print(request.POST['oldValue'])
+    for key,value in request.POST.items():
         print('Key: %s' % (key) ) 
         # print(f'Key: {key}') in Python 3.6
         print('Value %s' % (value) )

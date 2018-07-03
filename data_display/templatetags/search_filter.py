@@ -84,7 +84,7 @@ def getType(url):
 	
 @register.simple_tag()
 def makeUrl(string):
-    return 'infoDisplay/'+string
+    return '../../' + 'infoDisplay/'+string
 	
 @register.simple_tag()
 def rangeForIndex():
@@ -98,6 +98,21 @@ def getInfoForIndex(context,firstNum,secondNum):
 
 @register.simple_tag()	
 def getQuestions():
+    g = Graph()
+    g.parse(url)
+	
+    qres = g.query(
+    """
+	   SELECT DISTINCT ?obj
+       WHERE {<"""+
+        url + """> rdfs:comment ?obj 
+       }
+    """
+    )
+    comment=''
+    for res in qres:
+        comment+=str(res)
+    return comment
     #PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     #PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
     #prefix oldcan: <https://explorations4u.acdh.oeaw.ac.at/ontology/oldcan#>

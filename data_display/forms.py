@@ -5,4 +5,4 @@ class changeForm(forms.ModelForm):
     
     class Meta:
         model = models.changes
-        fields = ['targetUri','attributeName','oldValue','newValue','userId']
+        fields = ['attributeName','oldValue','newValue']
