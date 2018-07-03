@@ -11,8 +11,13 @@
 							{% csrf_token %}
 							{% for field in form %}
 							    <div class="form-group">
-									<label >{{ field.html_name }}</label>
-									<input type="email" class="form-control" id="{{ field.id_for_label }}" aria-describedby="emailHelp">
+									{% if field.type == password %}
+										<label >{{ field.html_name }}</label>
+										<input type="password" class="form-control" id="{{ field.id_for_label }}" aria-describedby="emailHelp">
+									{% else %}
+										<label >{{ field.html_name }}</label>
+										<input type="text" class="form-control" id="{{ field.id_for_label }}" aria-describedby="emailHelp">
+									{% endif %}
 									{{ field.errors}}
 								</div>
 							{% endfor %}

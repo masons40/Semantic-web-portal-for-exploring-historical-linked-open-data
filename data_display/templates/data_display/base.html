@@ -71,49 +71,49 @@
 			<div id="sidebar-container" class="sidebar-expanded d-none d-md-block col-2 col-md-3">
 				<ul class="list-group sticky-top sticky-offset">
 				    <!-- Questionnaire Box -->
-					<a href="Questionnaire" class="bg-light list-group-item list-group-item-action flex-column align-items-start" value="http://exploreat.adaptcentre.ie/Questionnaire">
+					<a href="{% url 'data_display:index' type='Questionnaire' amount=10 offset=1 %}" class="bg-light list-group-item list-group-item-action flex-column align-items-start" value="http://exploreat.adaptcentre.ie/Questionnaire">
 						Questionnaires
 					</a>
 					<!-- END Questionnaire Box -->
 					
 					<!-- Question Box -->
-					<a href="Question" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+					<a href="{% url 'data_display:index' type='Question' amount=10 offset=1 %}" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
 						Questions
 					</a>
 					<!-- END Question Box -->
 					
 					<!-- Source Box -->
-					<a href="Source" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+					<a href="{% url 'data_display:index' type='Source' amount=10 offset=1 %}" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
 						Sources
 					</a>
 					<!-- END Source Box -->
 					
 					<!-- Multimedia Box -->
-					<a href="Multimedia" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+					<a href="{% url 'data_display:index' type='Multimedia' amount=10 offset=1 %}" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
 						Multimedias
 					</a>
 					<!-- END Multimedia Box -->
 					
 					<!-- PaperSlip Box -->
-					<a href="PaperSlip" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+					<a href="{% url 'data_display:index' type='PaperSlip' amount=10 offset=1 %}" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
 						PaperSlips
 					</a>
 					<!-- END PaperSlip Box -->
 					
 					<!-- PaperSlipRecord Box -->
-					<a href="PaperSlipRecord" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+					<a href="{% url 'data_display:index' type='PaperSlipRecord' amount=10 offset=1 %}" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
 						PaperSlip Records
 					</a>
 					<!-- END PaperSlip Record Box -->
 					
 					<!-- Lemma Box -->
-					<a href="Lemma" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
+					<a href="{% url 'data_display:index' type='Lemma' amount=10 offset=1 %}" class="bg-light list-group-item list-group-item-action flex-column align-items-start">
 						Lemmas
 					</a>
 					<!-- END Lemma Box -->
 					
 					<!-- Person Box -->
-					<a href="Person" class="bg-light list-group-item list-group-item-action flex-column align-items-start" id="Person">
+					<a href="{% url 'data_display:index' type='Person' amount=10 offset=1 %}" class="bg-light list-group-item list-group-item-action flex-column align-items-start" id="Person">
 						Person
 					</a>
 					<!-- END Person Box -->

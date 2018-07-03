@@ -5,7 +5,7 @@
 
 		<div class="col-10 col-md-9">
 			<div class="row">
-			        {% getRange 0 as range %}
+			        
 					{% for i in range %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
 					    <div class="card col-sm-10 col-md-3 col-lg-2 m-3 p-0 m-1">
 							<div class="card-header bg-dark text-light">{% getTypeForIndex i False%}</div>
@@ -24,26 +24,7 @@
 						</div>
 					{% endfor %}
 			</div>
-            <div class="row">
-			        {% getRange 1 as rangeTwo %}
-					{% for n in rangeTwo %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
-					    <div class="card col-sm-10 col-md-3 col-lg-2 m-3 p-0 m-1">
-							<div class="card-header bg-dark text-light">{% getTypeForIndex n False%}</div>
-							<ul class="list-group list-group-flush">
-							    {% rangeForIndex as rangeTwo%}
-							    {% for m in rangeThree %}
-									<li class="list-group-item text-black-50">{% getInfoForIndex m n%}</li>
-								{% endfor %}
-							</ul>
-							{% getTypeForIndex n True as type %}
-							{% makeUrl type as url%}
-							<a href="{{url}}" class="btn btn-primary m-2">View more</a>
-							<div>
-								<a href="{{url}}" data-toggle="tooltip"  data-placement="right" title="Edit"><i class="fa fa-wrench m-2"></i></a>
-							</div>
-						</div>
-					{% endfor %}
-			</div>
+           
 			
 			<div class="row">
 				<div class="mr-3">

@@ -23,7 +23,7 @@
 									{% getData firstIndex 'value' secondIndex as urlData %}
 									{% getData firstIndex 'shortname' secondIndex as wordData %}
 									<!-- will create a link -->
-									<td><a href="{{ urlData }}" data-toggle="tooltip" data-html="true" title="{% extraction urlData %}">{{wordData}}</a></td>
+									<td><a href="{{ urlData }}" data-toggle="tooltip" data-html="true" title="{{ urlData }}">{{wordData}}</a></td>
 								{% else %}
 									{% getData firstIndex 'shortname' secondIndex as wordData %}
 									<td>{{wordData}}</td>

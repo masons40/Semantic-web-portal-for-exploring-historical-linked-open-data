@@ -8,14 +8,16 @@ from . import forms
 from django.contrib.auth.decorators import login_required
 from data_display.models import changes
 
+
 import rdflib
 from rdflib.graph import Graph
 
 url = "http://exploreat.adaptcentre.ie/Questionnaire/1"
 names = ['Questionnaire','Question','PaperSlip','Source','Multimedia','PaperSlip Record','Lemma','Person']
 #index currently works for everything except Question
-def index(request,type=None):
+def index(request,type=None,amount=None,offset=None):
     url2 = "http://exploreat.adaptcentre.ie/"
+    print(amount, offset)
     if request.method == 'POST':
         strUrl='http://exploreat.adaptcentre.ie/'
         strUrl+=str(request.POST.get('typeValue'))
@@ -25,7 +27,7 @@ def index(request,type=None):
     if type != None:
         newUrl = url2 + type
 
-        context = getAllInfo(newUrl)
+        context = getAllInfo(newUrl,amount,offset)
         return render(request, 'data_display/index.html',context)
        
     
@@ -101,19 +103,26 @@ def retData(stringUrl):
 
     return data;
 	
-def getAllInfo(url):
-
+def getAllInfo(url,amount,offset):
+    newUrl = url + '/' + str(amount) + '/' + str(offset)
+    print(newUrl)
     data={}
-    response = requests.get(url)
+  
+    response = requests.get(newUrl)
     todos = json.loads(response.text)
-    i=0
+    results = ""
+    results = todos["results"]
+    bindings = todos["results"]["bindings"]
+    
     index = 0
     
-    for i in range(0,len(todos)):
-        if checkDataContained(data,todos[i]['s']['value']) != True:
-            data[index] = todos[i]['s']['value']
+    for binding in bindings:
+        if checkDataContained(data,binding['s']['value']) != True:
+            data[index] = binding['s']['value']
             index += 1
-	
+    
+    data['range'] = range(int(offset)-1,index)
+    print(data)
     return data
 	
 """
@@ -152,11 +161,19 @@ def checkDataContained(data,value):
 #function saves the data that has been changed 		
 @login_required(login_url="account:login")		
 def changed(request,id):
-    print(request.POST.get('attributeName'))
-    print(request.POST.get('oldValue'))
-    print(request.POST.get('newValue'))
-    #context = retData('http://exploreat.adaptcentre.ie/Questionnaire/1')
-        
+    
+    for key,value in request.items():
+        print('Key: %s' % (key) ) 
+        # print(f'Key: {key}') in Python 3.6
+        print('Value %s' % (value) )
+    """
+    form = forms.changeForm(request.POST)
+    if form.is_valid():
+        print('worked')
+    else:
+        print("not working")
+    form.save()
+    """
     return render(request,'data_display/base.html')
 						
 	

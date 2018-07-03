@@ -96,6 +96,20 @@ def getInfoForIndex(context,firstNum,secondNum):
     val = dic[secondNum]['shortname'][1]
     return dic[secondNum]['shortname'][0] + ": " + val[0:9] + "..."
 
+@register.simple_tag()	
+def getQuestions():
+    #PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    #PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    #prefix oldcan: <https://explorations4u.acdh.oeaw.ac.at/ontology/oldcan#>
+    """
+    SELECT ?question
+    from <http://exploreat.adaptcentre.ie/Questionnaire_graph>
+    from <http://exploreat.adaptcentre.ie/Question_graph>
+    WHERE {
+        ?question oldcan:isQuestionOf <http://exploreat.adaptcentre.ie/Questionnaire/10>. 
+    }
+	"""
+	
 	
 @register.simple_tag(takes_context=True)	
 def getData(context,i,word,arg):
@@ -129,6 +143,9 @@ def getListLength(context):
 
 @register.simple_tag()	
 def extraction(url):
+    if 'w3' in url:
+        return url
+	
     g = Graph()
     g.parse(url)
 	
@@ -142,15 +159,17 @@ def extraction(url):
     )
     comment=''
     for res in qres:
-        comment+=str(res)
+        comment+=str(res[0])
         
     return comment
 	
 	
 @register.simple_tag(takes_context=True)
 def getRange(context,startNum):
- 
+    return range(0,10)
+    """
     if startNum == 0:
         return range(0,5)
     else:
         return range(5,10)
+    """
