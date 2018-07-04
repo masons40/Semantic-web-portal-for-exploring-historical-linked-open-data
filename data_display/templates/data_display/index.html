@@ -5,17 +5,18 @@
 
 		<div class="col-10 col-md-9">
 			<div class="row">
-				<form method="post" action="" >
+				<form method="post" action="{% url 'data_display:index' %}" >
+				    {% csrf_token %}
 				    <div class="form-group d.inline-block">
 					    <select name="type" class="form-control">
-							<option value="volvo">Questionnaire</option>
-							<option value="saab">Question</option>
-							<option value="fiat">Source</option>
-							<option value="audi">Multimedia</option>
-							<option value="volvo">PaperSlip</option>
-							<option value="saab">PaperSlipRecord</option>
-							<option value="fiat">Lemma</option>
-							<option value="audi">Person</option>
+							<option value="Questionnaire">Questionnaire</option>
+							<option value="Question">Question</option>
+							<option value="Source">Source</option>
+							<option value="Multimedia">Multimedia</option>
+							<option value="PaperSlip">PaperSlip</option>
+							<option value="PaperSlipRecord">PaperSlipRecord</option>
+							<option value="Lemma">Lemma</option>
+							<option value="Person">Person</option>
 						</select>
 					    <input type="text" class="form-control" name="id" >
 					    <button type="submit" class="btn btn-primary">Go</button>

@@ -20,10 +20,11 @@ def index(request,type=None,amount=None,offset=None):
     
     if request.method == 'POST':
         strUrl='http://exploreat.adaptcentre.ie/'
-        strUrl+=str(request.POST.get('typeValue'))
+        strUrl+=str(request.POST.get('type'))
         strUrl+='/'+str(request.POST.get('id'))
+        print(strUrl)
         context = retData(strUrl)
-        return render(request, 'data_display/index.html',context)
+        return render(request, 'data_display/dataDisplay.html',context)
     if type != None:
         newUrl = url2 + type
 
@@ -40,6 +41,7 @@ def infoDisplay(request,type,id):
         strUrl='http://exploreat.adaptcentre.ie/'+type+'/'+id
         strUrl+=str(request.POST.get('typeValue'))
         strUrl+='/'+str(request.POST.get('id'))
+        print(strUrl)
         context = retData(strUrl)
         return render(request, 'data_display/index.html',context)
     context = retData('http://exploreat.adaptcentre.ie/'+type+'/'+id)
