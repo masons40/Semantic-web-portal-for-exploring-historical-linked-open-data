@@ -17,4 +17,4 @@ class changes(models.Model):
     userId = models.IntegerField()
 	
     def __str__(self):
-        return str(self.dateCreated) + ' ' + str(self.dateModified)
+        return 'object '  +str(self.id) + ' modified/created by:User ' + str(self.userId)

@@ -158,8 +158,6 @@ def getListLength(context):
 
 @register.simple_tag()	
 def extraction(url):
-    if 'w3' in url:
-        return url
 	
     g = Graph()
     g.parse(url)
@@ -178,13 +176,7 @@ def extraction(url):
         
     return comment
 	
+
 	
-@register.simple_tag(takes_context=True)
-def getRange(context,startNum):
-    return range(0,10)
-    """
-    if startNum == 0:
-        return range(0,5)
-    else:
-        return range(5,10)
-    """
+
+	

@@ -7,6 +7,7 @@ from collections import defaultdict
 from . import forms
 from django.contrib.auth.decorators import login_required
 from data_display.models import changes
+from django.shortcuts import get_object_or_404
 
 
 import rdflib
@@ -19,16 +20,50 @@ def index(request,type=None,amount=None,offset=None):
     url2 = "http://exploreat.adaptcentre.ie/"
     
     if request.method == 'POST':
+	
+        try:
+            left = request.POST['left']
+            type = request.POST['type']
+            amount=request.POST['amount']
+            amountN = int(amount)+int(left)
+            if amount==10:
+                newUrl = url2 + type
+
+                context = getAllInfo(newUrl,10,1,type)
+                return render(request, 'data_display/index.html',context)
+            offset=request.POST['offset']
+            offsetN = int(offset)+int(left)
+            newUrl = url2 + type
+
+            context = getAllInfo(newUrl,amountN,offsetN,type)
+            return render(request, 'data_display/index.html',context)
+        except:
+            print("using right arrow")
+        try:
+            right = request.POST['right']
+            type = request.POST['type']
+            amount=request.POST['amount']
+            amountN = int(amount)+int(right)
+            offset=request.POST['offset']
+            offsetN = int(offset)+int(right)
+            newUrl = url2 + type
+            print("got here with:",offsetN," ",amountN)
+            context = getAllInfo(newUrl,amountN,offsetN,type)
+            print(context)
+            return render(request, 'data_display/index.html',context)
+        except:
+            print("using left arrow")
+			
+		
         strUrl='http://exploreat.adaptcentre.ie/'
         strUrl+=str(request.POST.get('type'))
         strUrl+='/'+str(request.POST.get('id'))
-        print(strUrl)
         context = retData(strUrl)
         return render(request, 'data_display/dataDisplay.html',context)
     if type != None:
         newUrl = url2 + type
 
-        context = getAllInfo(newUrl,amount,offset)
+        context = getAllInfo(newUrl,amount,offset,type)
         return render(request, 'data_display/index.html',context)
        
     
@@ -45,7 +80,7 @@ def infoDisplay(request,type,id):
         context = retData(strUrl)
         return render(request, 'data_display/index.html',context)
     context = retData('http://exploreat.adaptcentre.ie/'+type+'/'+id)
-
+    context['targetUri'] = 'http://exploreat.adaptcentre.ie/'+type+'/'+id
     return render(request, 'data_display/dataDisplay.html',context)
 
 # function used to create single words instead of long urls	
@@ -105,7 +140,7 @@ def retData(stringUrl):
 
     return data;
 	
-def getAllInfo(url,amount,offset):
+def getAllInfo(url,amount,offset,type):
     newUrl = url + '/' + str(amount) + '/' + str(offset)
     
     data={}
@@ -124,32 +159,10 @@ def getAllInfo(url,amount,offset):
             index += 1
     
     data['range'] = range(int(offset)-1,index)
-
+    data['type'] = type
+    data['amount'] = amount
+    data['offset'] = offset
     return data
-	
-"""
-def getInfoById(url):
-
-    data={}
-    responseList=[]
-    for i in range(1,10):
-        response = requests.get(url+'/'+str(i))
-        responseList.append(response.text)
-    print(responseList)
-    
-	todos = json.loads(responseList)
-    i=0
-    index = 0
-    
-	for url in 
-	
-    for i in range(0,len(todos)):
-        if checkDataContained(data,todos[i]['s']['value']) != True:
-            data[index] = todos[i]['s']['value']
-            index += 1
-	
-    return data
-"""
 	
 def checkDataContained(data,value):
     i=0;
@@ -162,44 +175,28 @@ def checkDataContained(data,value):
 	
 #function saves the data that has been changed 		
 @login_required(login_url="account:login")		
-def changed(request,id):
-    print(request.POST['oldValue'])
-    for key,value in request.POST.items():
-        print('Key: %s' % (key) ) 
-        # print(f'Key: {key}') in Python 3.6
-        print('Value %s' % (value) )
-    """
-    form = forms.changeForm(request.POST)
-    if form.is_valid():
-        print('worked')
-    else:
-        print("not working")
-    form.save()
-    """
+def changed(request):
+   
+    try:
+        obj = changes.objects.get(pk=request.POST['id'])
+        print("got into change")
+        obj.oldValue = request.POST['oldValue']
+        obj.attributeName = request.POST['attributeName']
+        obj.targetUri = request.POST['targetUri']
+        obj.newValue = request.POST['newValue']
+        obj.save()
+    except changes.DoesNotExist:
+        print("make new change")
+        NoldValue = request.POST['oldValue']
+        NattributeName = request.POST['attributeName']
+        NnewValue = request.POST['newValue']
+        NtargetUri = request.POST['targetUri']
+        Nid = request.POST['id']
+        NuserId = request.user.id
+		
+        newObj = changes(id=Nid,targetUri=NtargetUri,attributeName=NattributeName,oldValue=NoldValue,newValue=NnewValue,userId=NuserId)
+        newObj.save()
     return render(request,'data_display/base.html')
 						
-	
-def getInfo(urlData):
-    g = Graph()
-    g.parse(url)
-	
-    qres = g.query(
-    """
-	   SELECT DISTINCT ?obj
-       WHERE {<"""+
-        url + """> rdfs:comment ?obj 
-       }
-    """
-    )
-    comment=''
-    for res in qres:
-        comment+=str(res)
-    return comment
-			
-			
-			
-			
-			
-			
-			
+
 			
