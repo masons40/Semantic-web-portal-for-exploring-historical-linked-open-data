@@ -5,7 +5,7 @@ import json
 import requests
 import re
 register = template.Library()
-names = ['Questionnaire','Question','PaperSlip','Source','Multimedia','PaperSlip Record','Lemma','Person']
+names = ['Questionnaire','Question','PaperSlipRecord','PaperSlip','Source','Multimedia','Lemma','Person']
 @register.simple_tag(takes_context=True)
 def typeTest(context,i,arg):
     if context[i]['type'][arg] == 'uri':
@@ -27,7 +27,21 @@ def word(string,findCharacter,secondCharacter):
 def findName(stringUrl):
     position = stringUrl.rfind('/')
     return stringUrl[position+1:len(stringUrl)]
+@register.simple_tag(takes_context=True)
+def getTitle(context, type, indexPos):
+
+    num = int(indexPos)
+    newDic = retData(context[num])
 	
+    try:
+        for key,value in newDic.items():
+            if value['shortname'][0] == 'label':
+                newName = value['shortname'][1] 
+                return newName[0:13]+'...'
+    except:
+        return 'no label found'
+            
+    return 'hello'
 # function gets all the data from a given url, will create a type,value and shortname key. all keys have values of lists which contain the info from the url
 def retData(stringUrl):
     #retrieves all relevant data from the parsed json url, works for all entities and is used in dataDisplay
@@ -85,7 +99,8 @@ def getType(url):
 @register.simple_tag()
 def makeUrl(string):
     #creates the urls needed in the index page to view more information about the entity
-    return '../../' + 'infoDisplay/'+string
+    
+    return '../../../' + 'data_display/infoDisplay/'+string
 	
 @register.simple_tag()
 def rangeForIndex():
@@ -169,9 +184,7 @@ def test(url):
         matchesTwo = pattern.finditer(newString)
         for m in matchesTwo:
             return '../' + newString[m.span()[0]:m.span()[1]]
-    return '../../'       
-	
-	
+    return url	
 @register.simple_tag()	
 def extraction(url):
 	#used to collect information for the tooltips
@@ -192,7 +205,17 @@ def extraction(url):
         
     return comment
 	
-
+@register.simple_tag()
+def backTen(amount, offset, type):
+    if amount==10 and offset==1:
+        return ''
+    else:
+        newAmount = int(amount)- 10
+        newOffset = int(offset)- 10
+    return '../../../../data_display/'+str(type)+'/'+str(newAmount)+'/'+str(newOffset)
 	
-
-	
+@register.simple_tag()
+def forwardTen(amount, offset, type):
+    newAmount = int(amount)+10
+    newOffset = int(offset)+10
+    return '../../../../data_display/'+str(type)+'/'+str(newAmount)+'/'+str(newOffset)

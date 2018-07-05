@@ -26,7 +26,7 @@
 			<div class="row">
 					{% for i in range %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
 					    <div class="card col-sm-10 col-md-3 col-lg-2 m-3 p-0 m-1">
-							<div class="card-header bg-dark text-light">{% getTypeForIndex i False%}</div>
+							<div class="card-header bg-dark text-light">{% getTitle type i%}</div>
 							<ul class="list-group list-group-flush">
 							    {% rangeForIndex as rangeTwo%}
 							    {% for j in rangeTwo %}
@@ -41,21 +41,11 @@
 							</div>
 						</div>
 					{% endfor %}
+					
+					<hr>
+					<a href="{% backTen amount offset type%}" class="btn btn-primary m-1"><i class="fa fa-arrow-left"></i></a>
+					<a href="{% forwardTen amount offset type%}" class="btn btn-primary m-1"><i class="fa fa-arrow-right"></i></a>
 			</div>
            
-			
-			<div class="row">
-			    
-				<form action="{% url 'data_display:index' %}" method="post">
-				{% csrf_token %}
-				    <div class="mr-3 form-group">
-					    <input type="hidden" name="type" value="{{type}}">
-					    <input type="hidden" name="offset" value="{{offset}}">
-					    <input type="hidden" name="amount" value="{{amount}}">
-						<button class="btn btn-primary" type="submit" name="left" value=-10><i class="fa fa-arrow-left"></i></button>
-						<button class="btn btn-primary ml-auto " type="submit" name="right" value=10><i class="fa fa-arrow-right"></i></button>
-					</div>
-				</form>
-			</div>
 		</div>
 {% endblock %}

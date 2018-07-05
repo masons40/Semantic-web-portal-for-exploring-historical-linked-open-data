@@ -46,9 +46,9 @@ def index(request,type=None,amount=None,offset=None):
             offset=request.POST['offset']
             offsetN = int(offset)+int(right)
             newUrl = url2 + type
-            print("got here with:",offsetN," ",amountN)
+            
             context = getAllInfo(newUrl,amountN,offsetN,type)
-            print(context)
+            
             return render(request, 'data_display/index.html',context)
         except:
             print("using left arrow")
@@ -61,7 +61,6 @@ def index(request,type=None,amount=None,offset=None):
         return render(request, 'data_display/dataDisplay.html',context)
     if type != None:
         newUrl = url2 + type
-
         context = getAllInfo(newUrl,amount,offset,type)
         return render(request, 'data_display/index.html',context)
        
@@ -75,7 +74,7 @@ def infoDisplay(request,type,id):
         strUrl='http://exploreat.adaptcentre.ie/'+type+'/'+id
         strUrl+=str(request.POST.get('typeValue'))
         strUrl+='/'+str(request.POST.get('id'))
-        print(strUrl)
+        
         context = retData(strUrl)
         return render(request, 'data_display/index.html',context)
     context = retData('http://exploreat.adaptcentre.ie/'+type+'/'+id)
@@ -99,18 +98,20 @@ def findName(stringUrl):
 	
 # function gets all the data from a given url, will create a type,value and shortname key. all keys have values of lists which contain the info from the url
 def retData(stringUrl):
-   
+    
     data={}
     response = requests.get(stringUrl)
     todos = json.loads(response.text)
     results = ""
     results = todos["results"]
     bindings = todos["results"]["bindings"]
+   
     i=0;
     type=[]
     value=[]
     shortname=[]
     for binding in bindings:
+        
         type.append(binding['p']['type'])
         shortname.append(word(binding['p']['value'],'#','/'))
         value.append(binding['p']['value'])
@@ -136,7 +137,7 @@ def retData(stringUrl):
     data['id'] = findName(stringUrl)
     data['range'] = range(0,len(data)-2)
     data['form'] = forms.changeForm()
-
+    
     return data;
 	
 def getAllInfo(url,amount,offset,type):
@@ -150,17 +151,18 @@ def getAllInfo(url,amount,offset,type):
     results = todos["results"]
     bindings = todos["results"]["bindings"]
     
-    index = 0
+    index = int(amount)-10
     
     for binding in bindings:
         if checkDataContained(data,binding['s']['value']) != True:
             data[index] = binding['s']['value']
             index += 1
     
-    data['range'] = range(int(offset)-1,index)
+    data['range'] = range(int(offset)-1,int(amount))
     data['type'] = type
     data['amount'] = amount
     data['offset'] = offset
+    
     return data
 	
 def checkDataContained(data,value):
@@ -178,14 +180,14 @@ def changed(request):
    
     try:
         obj = changes.objects.get(pk=request.POST['id'])
-        print("got into change")
+        
         obj.oldValue = request.POST['oldValue']
         obj.attributeName = request.POST['attributeName']
         obj.targetUri = request.POST['targetUri']
         obj.newValue = request.POST['newValue']
         obj.save()
     except changes.DoesNotExist:
-        print("make new change")
+       
         NoldValue = request.POST['oldValue']
         NattributeName = request.POST['attributeName']
         NnewValue = request.POST['newValue']
