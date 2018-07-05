@@ -3,7 +3,7 @@ import rdflib
 from rdflib.graph import Graph
 import json
 import requests
-
+import re
 register = template.Library()
 names = ['Questionnaire','Question','PaperSlip','Source','Multimedia','PaperSlip Record','Lemma','Person']
 @register.simple_tag(takes_context=True)
@@ -155,7 +155,20 @@ def getLength(context):
 @register.simple_tag(takes_context=True)
 def getListLength(context):
     return range(0,2)
-
+	
+@register.simple_tag()	
+def test(url):
+    pattern = re.compile(r'[a-zA-Z]*/[0-9]*')
+    patternTwo = re.compile(r'http://exploreat.adaptcentre.ie/')
+    matches = patternTwo.finditer(url)
+    for match in matches:
+        newString = url[int(match.span()[1]):len(url)]
+        matchesTwo = pattern.finditer(newString)
+        for m in matchesTwo:
+            return '../' + newString[m.span()[0]:m.span()[1]]
+    return '../../'       
+	
+	
 @register.simple_tag()	
 def extraction(url):
 	

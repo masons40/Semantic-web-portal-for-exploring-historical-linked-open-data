@@ -8,12 +8,10 @@ from . import forms
 from django.contrib.auth.decorators import login_required
 from data_display.models import changes
 from django.shortcuts import get_object_or_404
-
-
 import rdflib
 from rdflib.graph import Graph
 
-url = "http://exploreat.adaptcentre.ie/Questionnaire/1"
+
 names = ['Questionnaire','Question','PaperSlip','Source','Multimedia','PaperSlip Record','Lemma','Person']
 #index currently works for everything except Question
 def index(request,type=None,amount=None,offset=None):
