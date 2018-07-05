@@ -14,6 +14,7 @@ def typeTest(context,i,arg):
 	
 counter = 0
 def word(string,findCharacter,secondCharacter):
+    #creates a smaller word to diplay, visual use only 
     if string.rfind(findCharacter) == -1:
         position = string.rfind(secondCharacter)
     else:
@@ -29,7 +30,7 @@ def findName(stringUrl):
 	
 # function gets all the data from a given url, will create a type,value and shortname key. all keys have values of lists which contain the info from the url
 def retData(stringUrl):
-   
+    #retrieves all relevant data from the parsed json url, works for all entities and is used in dataDisplay
     data={}
     response = requests.get(stringUrl)
     todos = json.loads(response.text)
@@ -65,7 +66,6 @@ def retData(stringUrl):
 	
     data['id'] = findName(stringUrl)
     data['range'] = range(0,len(data)-2)
-    #data['form'] = forms.changeForm()
     data['type'] = getType(stringUrl)
     return data;
 @register.simple_tag(takes_context=True)
@@ -84,6 +84,7 @@ def getType(url):
 	
 @register.simple_tag()
 def makeUrl(string):
+    #creates the urls needed in the index page to view more information about the entity
     return '../../' + 'infoDisplay/'+string
 	
 @register.simple_tag()
@@ -98,6 +99,7 @@ def getInfoForIndex(context,firstNum,secondNum):
 
 @register.simple_tag()	
 def getQuestions():
+
     g = Graph()
     g.parse(url)
 	
@@ -158,6 +160,7 @@ def getListLength(context):
 	
 @register.simple_tag()	
 def test(url):
+    #pattern matching technique to create urls for navigation to other linked entities
     pattern = re.compile(r'[a-zA-Z]*/[0-9]*')
     patternTwo = re.compile(r'http://exploreat.adaptcentre.ie/')
     matches = patternTwo.finditer(url)
@@ -171,7 +174,7 @@ def test(url):
 	
 @register.simple_tag()	
 def extraction(url):
-	
+	#used to collect information for the tooltips
     g = Graph()
     g.parse(url)
 	

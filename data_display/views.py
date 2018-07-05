@@ -8,8 +8,7 @@ from . import forms
 from django.contrib.auth.decorators import login_required
 from data_display.models import changes
 from django.shortcuts import get_object_or_404
-import rdflib
-from rdflib.graph import Graph
+
 
 
 names = ['Questionnaire','Question','PaperSlip','Source','Multimedia','PaperSlip Record','Lemma','Person']
@@ -20,6 +19,7 @@ def index(request,type=None,amount=None,offset=None):
     if request.method == 'POST':
 	
         try:
+            #left arrow navigation is triggered
             left = request.POST['left']
             type = request.POST['type']
             amount=request.POST['amount']
@@ -38,6 +38,7 @@ def index(request,type=None,amount=None,offset=None):
         except:
             print("using right arrow")
         try:
+            #right arrow navigation is triggered
             right = request.POST['right']
             type = request.POST['type']
             amount=request.POST['amount']
