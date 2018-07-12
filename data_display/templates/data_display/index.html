@@ -3,49 +3,29 @@
 {% load staticfiles %}
 {% block content %}
 
-		<div class="col-10 col-md-9">
-			<div class="row">
-				<form method="post" action="{% url 'data_display:index' %}" >
-				    {% csrf_token %}
-				    <div class="form-inline d-inline-block ">
-					    <select name="type" class="form-control">
-							<option value="Questionnaire">Questionnaire</option>
-							<option value="Question">Question</option>
-							<option value="Source">Source</option>
-							<option value="Multimedia">Multimedia</option>
-							<option value="PaperSlip">PaperSlip</option>
-							<option value="PaperSlipRecord">PaperSlipRecord</option>
-							<option value="Lemma">Lemma</option>
-							<option value="Person">Person</option>
-						</select>
-					    <input type="text" class="form-control" name="id" placeholder="Enter entity id">
-					    <button type="submit" class="btn btn-primary">Go</button>
-					</div>
-				</form>
-			</div>
-			<div class="row">
+		<div class="col-10 ">
+			<div class="row" style="margin:10px auto">
 					{% for i in range %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
 					    <div class="card col-sm-10 col-md-3 col-lg-2 m-3 p-0 m-1">
 							<div class="card-header bg-dark text-light">{% getTitle type i%}</div>
 							<ul class="list-group list-group-flush">
 							    {% rangeForIndex as rangeTwo%}
 							    {% for j in rangeTwo %}
-									<li class="list-group-item text-black-50">{% getInfoForIndex i j%}</li>
+									<li class="list-group-item text-black-50 " style="text-align:left;background-color:white;" >{% getInfoForIndex i j%}</li>
 								{% endfor %}
 							</ul>
 							{% getTypeForIndex i True as type %}
 							{% makeUrl type as url%}
 							<a href="{{url}}" class="btn btn-primary m-2">View more</a>
-							<div>
-								<a href="{{url}}" data-toggle="tooltip"  data-placement="right" title="Edit"><i class="fa fa-wrench m-2"></i></a>
-							</div>
 						</div>
 					{% endfor %}
 					
-					<hr>
-					<a href="{% backTen amount offset type%}" class="btn btn-primary m-1"><i class="fa fa-arrow-left"></i></a>
-					<a href="{% forwardTen amount offset type%}" class="btn btn-primary m-1"><i class="fa fa-arrow-right"></i></a>
 			</div>
            
+		</div>
+		
+		<div class="row" style="margin:0 auto;margin-bottom:70px;">
+			<a href="{% backTen amount offset type%}" class="btn btn-primary m-1"><i class="fa fa-arrow-left"></i></a>
+			<a href="{% forwardTen amount offset type%}" class="btn btn-primary m-1"><i class="fa fa-arrow-right"></i></a>
 		</div>
 {% endblock %}

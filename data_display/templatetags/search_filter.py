@@ -6,6 +6,8 @@ import requests
 import re
 register = template.Library()
 names = ['Questionnaire','Question','PaperSlipRecord','PaperSlip','Source','Multimedia','Lemma','Person']
+
+imageSources = []
 @register.simple_tag(takes_context=True)
 def typeTest(context,i,arg):
     if context[i]['type'][arg] == 'uri':
@@ -183,11 +185,12 @@ def test(url):
         newString = url[int(match.span()[1]):len(url)]
         matchesTwo = pattern.finditer(newString)
         for m in matchesTwo:
-            return '../' + newString[m.span()[0]:m.span()[1]]
+            return '../../infoDisplay/'+newString[m.span()[0]:m.span()[1]]
     return url	
 @register.simple_tag()	
 def extraction(url):
-	#used to collect information for the tooltips
+    if "exploreat.adaptcentre.ie" in url or 'prismstandard' in url:
+        return "";
     g = Graph()
     g.parse(url)
 	
@@ -204,7 +207,46 @@ def extraction(url):
         comment+=str(res[0])
         
     return comment
+
+#image handling 	
+@register.simple_tag()	
+def imagesRange():
+    return range(0,len(imageSources))
 	
+@register.simple_tag()	
+def addImageSource(source):
+    imageSources.append(str(source))
+
+@register.simple_tag()	
+def imageTest(source):
+    if '.jpg' in source or '.png' in source:
+        return True
+    else:
+        return False
+
+@register.simple_tag()	
+def makeImageName():
+    newStr = "image" + str(len(imageSources))
+    return newStr	
+
+@register.simple_tag()	
+def makeNewImageName(num):
+    newStr = "image" + str(num)
+    return newStr
+	
+#end of images handling 
+
+@register.simple_tag()	
+def makeName(firstIndex):
+    newStr = "saveIcons" + str(firstIndex)
+    return newStr
+
+@register.simple_tag()
+def getSelected(selected):
+    newUrl = 'http://exploreat.adaptcentre.ie/'+str(selected)+'10/1'
+    context = retData(newUrl)
+    print(context)
+
 @register.simple_tag()
 def backTen(amount, offset, type):
     if amount==10 and offset==1:

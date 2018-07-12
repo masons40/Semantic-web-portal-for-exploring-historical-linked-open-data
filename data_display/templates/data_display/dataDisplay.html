@@ -3,50 +3,68 @@
 {% load staticfiles %}
 {% block content %}
 
-		<div class="col-7 col-md-7">
-			<div class="container mr-2">
-				<table class="table table-bordered">
-					<tbody>
-					<thead class="thead-dark">
-						<tr>
-						  <th scope="col">{{name}} {{id}}</th>
-						</tr>
-					</thead>
-					{% for firstIndex in range %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
-					
-						{% getListLength as listRange %} <!-- templatetag(getListLength) returns listRange as a range datatype of 0-2 -->
-						<tr>
-						{% for secondIndex in listRange %} 
-								<!-- this for loop reads the first value and determines if it is a 'uri' , if true then condition is true -->
-								{% typeTest firstIndex secondIndex as condition%}
-								{% if condition %}
-									{% getData firstIndex 'value' secondIndex as urlData %}
-									{% getData firstIndex 'shortname' secondIndex as wordData %}
-									<!-- will create a link -->
-									<td><a href="{% test urlData %}" data-toggle="tooltip" data-html="true" title="{{ urlData }}">{{wordData}}</a></td>
-								{% else %}
-									{% getData firstIndex 'shortname' secondIndex as wordData %}
-									<td>{{wordData}}</td>
-								{% endif %}
-						{% endfor %}
-						</tr>
-					{% endfor %}
-					</tbody>
-				</table>
+		<div class="col-9" style="margin: 40px 40px;">
+			
+			<table class="table table-bordered" style="width:40%;">
+				<tbody>
+				<thead class="thead-dark">
+					<tr>
+					  <th scope="col">{{name}}</th>
+					</tr>
+				</thead>
+				{% for firstIndex in range %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
 				
-				<form action="{% url 'data_display:changed' %}" method="post">
-					{% csrf_token %}
-					{% for field in form %}
-					    <div class="form-group">
-							<label >{{ field.html_name }}</label>
-							<input type="text" class="form-control" name="{{field.html_name}}" aria-describedby="emailHelp">
-							<input type="hidden" class="form-control" name="id" value="{{id}}">
-							<input type="hidden" class="form-control" name="targetUri" value="{{targetUri}}">
-							{{ field.errors}}
-						</div>
+					{% getListLength as listRange %} <!-- templatetag(getListLength) returns listRange as a range datatype of 0-2 -->
+					<tr>
+					{% for secondIndex in listRange %} 
+							<!-- this for loop reads the first value and determines if it is a 'uri' , if true then condition is true -->
+							{% typeTest firstIndex secondIndex as condition%}
+							{% if condition %}
+								{% getData firstIndex 'value' secondIndex as urlData %}
+								{% getData firstIndex 'shortname' secondIndex as wordData %}
+								<!-- will create a link -->
+								{% imageTest wordData as testIfImage %}
+								{% if testIfImage %}
+								    <td><a href="{% test urlData %}" data-toggle="tooltip" data-html="true" title="{% extraction urlData %}" class="imageToShow" data-id="{% makeImageName %}">{{wordData}}</a></td>
+									{% addImageSource wordData%}
+								{% else %}
+							        <td><a href="{% test urlData %}" data-toggle="tooltip" data-html="true" title="{% extraction urlData %}">{{wordData}}</a></td>
+								{% endif %}
+							{% else %}
+								{% getData firstIndex 'shortname' secondIndex as wordData %}
+								{% imageTest wordData as testIfImage %}
+								{% if testIfImage %}
+									<td class="imageToShow" data-id="{% makeImageName %}" >{{wordData}}</td>
+									{% addImageSource wordData%}
+								{% else %}
+								    <td>{{wordData}}</td>
+								{% endif %}
+							{% endif %}
 					{% endfor %}
-				    <button class="btn btn-primary" type="submit">Make Edit</button>
-				</form>
-			</div>
+						<td><i class="fa fa-pencil saveIcons" style="color:green;" data-id="{% makeName firstIndex %}"></i></td>
+						<td style="display:none;" id="{% makeName firstIndex %}">
+							<form class="form-inline" action="{% url 'data_display:changed' %}" method="post">
+								{% csrf_token %}
+								{% for field in form %}
+									<div class="form-group">
+										<input type="text" class="form-control" name="{{field.html_name}}" placeholder="New Value" >
+										<input type="hidden" class="form-control" name="id" value="{{id}}">
+										<input type="hidden" class="form-control" name="targetUri" value="{% getData firstIndex 'value' 0 %}">
+										<input type="hidden" class="form-control" name="attributeName" value="{% getData firstIndex 'shortname' 0 %}">
+										<input type="hidden" class="form-control" name="oldValue" value="{% getData firstIndex 'shortname' 1 %}">
+										<button class="btn btn-outline-success" type="submit" style="margin-left:14px;"><i class="fa fa-save"></i></button>
+										{{ field.errors}}
+									</div>
+								{% endfor %}
+							</form>
+						</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			{% imagesRange as ranges %}
+			{% for i in ranges %}
+			    <img src="{% static 'images/dcu.png' %}" alt="dcu.png" style="position:absolute;top:10;left:10;" data-id="{% makeNewImageName i %}"/>
+			{% endfor %}
 		</div>
 {% endblock %}

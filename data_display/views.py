@@ -120,8 +120,8 @@ def retData(stringUrl):
         value.append(binding['o']['value'])
         shortname.append(word(binding['o']['value'],'#','/'))
         
-        if word(binding['o']['value'],'#','/') in names:
-            data['name'] = word(binding['o']['value'],'#','/')
+        if word(binding['p']['value'],'#','/') == 'label':
+            data['name'] = binding['o']['value']
 
         data[i] = {
                 'type':type,
@@ -144,25 +144,25 @@ def getAllInfo(url,amount,offset,type):
     newUrl = url + '/' + str(amount) + '/' + str(offset)
     
     data={}
-  
+    
     response = requests.get(newUrl)
     todos = json.loads(response.text)
     results = ""
     results = todos["results"]
     bindings = todos["results"]["bindings"]
-    
-    index = int(amount)-10
-    
+    endRange=0
+    index = 0
+  
     for binding in bindings:
         if checkDataContained(data,binding['s']['value']) != True:
             data[index] = binding['s']['value']
             index += 1
-    
-    data['range'] = range(int(offset)-1,int(amount))
+            endRange+=1
+    data['range'] = range(int(offset)-1,endRange)
     data['type'] = type
     data['amount'] = amount
     data['offset'] = offset
-    
+    print("DATA:",data)
     return data
 	
 def checkDataContained(data,value):
