@@ -39,6 +39,12 @@
 							<button class="btn btn-default bg-light text-dark" >logout<span style="margin:2px;"></span><i class="fa fa-sign-out"></i></button>
 						</form>
 					</li>
+					<li class="nav-item active  mr-auto">
+						<form action="{% url 'account:signup' %}">
+							{% csrf_token %}
+							<button class="btn btn-default bg-light text-dark" >Sign Up<span style="margin:2px;"></span><i class="fa fa-sign-up"></i></button>
+						</form>
+					</li>
 					<li class="nav-item dropdown d-sm-block d-md-none">
 						<a class="nav-link dropdown-toggle" href="#" id="smallerscreenmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						  Menu
@@ -58,7 +64,7 @@
 				<form method="post" action="{% url 'data_display:index' %}" class="form-inline">
 					{% csrf_token %}
 					<div class="form-inline">
-						<select name="type" class="form-control input-item">
+						<select name="type" class="form-control input-item" name="select1" id="select1">
 							<option value="Questionnaire">Questionnaire</option>
 							<option value="Question">Question</option>
 							<option value="Source">Source</option>
@@ -68,7 +74,16 @@
 							<option value="Lemma">Lemma</option>
 							<option value="Person">Person</option>
 						</select>
-						<input type="text" class="form-control " name="id" placeholder="Enter entity id" aria-label="Search">
+						<select name="type" class="form-control input-item" name="select2" id="select2">
+							<option value="Questionnaire">Label</option>
+							<option value="Questionnaire">Note</option>
+							<option value="Questionnaire">Type</option>
+							<option value="Questionnaire">Title</option>
+							<option value="Questionnaire">System</option>
+							<option value="Questionnaire">Has Author</option>
+							<option value="Questionnaire">Publication Year</option>
+						</select>
+						<input type="text" class="form-control " name="val" placeholder="Enter Value" aria-label="Search">
 						<button type="submit" class="btn btn-outline-success " style="margin-left:2px;">Search</button>
 					</div>
 				</form>
@@ -141,7 +156,7 @@
 						<a href="{% url 'data_display:index' type='PaperSlipRecord' amount=10 offset=1 %}" class="list-group-item" >PaperSlip Records</a>
 					</li>
 					<li style="list-style-type:none;">
-						<a href="{% url 'data_display:index' type='Lemma' amount=10 offset=1 %}" class="list-group-item" >Lemmas</a>
+						<a href="{% url 'data_display:index' type='Lemma' amount=20 offset=1 %}" class="list-group-item" >Lemmas</a>
 					</li>
 					<li style="list-style-type:none;">
 						<a href="{% url 'data_display:index' type='Person' amount=10 offset=1 %}" class="list-group-item" >Persons</a>
@@ -225,7 +240,63 @@
 		<script src={% static 'script/styleScripting.js' %} ></script>
 		<script>
 		$(document).ready(function(){
-			$('[data-toggle="tooltip"]').tooltip();   
+			$('[data-toggle="tooltip"]').tooltip();  
+
+			$("#select1").change(function() {
+				if ($(this).data('options') === undefined) {
+					/*Taking an array of all options-2 and kind of embedding it on the select1*/
+					$(this).data('options', $('#select2 option').clone());
+				}
+				var id = $(this).val();
+
+				var choice = $(this).val();
+				var options = $(this).data('options');
+				
+				var opt = []
+				if(choice === "Questionnaire"){
+				    var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					for(var i=0;i<attributeList.length;i++){
+						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
+					}
+				}else if(choice == "Question"){
+					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					for(var i=0;i<attributeList.length;i++){
+						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
+					}
+				}else if(choice == "Source"){
+					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					for(var i=0;i<attributeList.length;i++){
+						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
+					}
+				}else if(choice == "Multimedia"){
+					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					for(var i=0;i<attributeList.length;i++){
+						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
+					}
+				}else if(choice == "PaperSlip"){
+					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					for(var i=0;i<attributeList.length;i++){
+						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
+					}
+				}else if(choice == "PaperSlipRecord"){
+					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					for(var i=0;i<attributeList.length;i++){
+						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
+					}
+				}else if(choice == "Person"){
+					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					for(var i=0;i<attributeList.length;i++){
+						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
+					}
+				}else if(choice == "Lemma"){
+					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					for(var i=0;i<attributeList.length;i++){
+						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
+					}
+				}
+				
+				$('#select2').html(opt);
+			});
 		});
 		</script>
 	</body>

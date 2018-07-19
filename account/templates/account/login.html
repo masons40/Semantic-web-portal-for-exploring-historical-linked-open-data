@@ -2,29 +2,15 @@
 {% load search_filter %}
 {% load staticfiles %}
         {% block content %}
-		<div class="col-2 col-md-9 col-sm-10">
+		<div class="col-2 col-md-5 col-sm-10 mt-4">
 			<div class="card mr-3">
 			    <div class="card-header bg-dark text-light">Login</div>
-			    <form class="m-4">
-					<div class="container mainBox" style="margin-top:50px;">
-						<form action="{% url 'account:login' %}" method="post">
-							{% csrf_token %}
-							{% for field in form %}
-							    <div class="form-group">
-									{% if field.type == password %}
-										<label >{{ field.html_name }}</label>
-										<input type="password" class="form-control" id="{{ field.id_for_label }}" aria-describedby="emailHelp">
-									{% else %}
-										<label >{{ field.html_name }}</label>
-										<input type="text" class="form-control" id="{{ field.id_for_label }}" aria-describedby="emailHelp">
-									{% endif %}
-									{{ field.errors}}
-								</div>
-							{% endfor %}
-							<button type="submit" class="btn btn-primary m-3" value="login">Login</button>
-						</form>
-					</div>
-				</div>
+					<form action="{% url 'account:login' %}" method="post">
+						{% csrf_token %}
+						{{ form }}
+						<button type="submit" class="btn btn-primary m-3" value="login">Login</button>
+					</form>
 			</div>
 		</div>
+		
 		{% endblock %}

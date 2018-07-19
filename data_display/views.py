@@ -142,7 +142,7 @@ def retData(stringUrl):
 	
 def getAllInfo(url,amount,offset,type):
     newUrl = url + '/' + str(amount) + '/' + str(offset)
-    
+    print(newUrl)
     data={}
     
     response = requests.get(newUrl)
@@ -162,7 +162,7 @@ def getAllInfo(url,amount,offset,type):
     data['type'] = type
     data['amount'] = amount
     data['offset'] = offset
-    print("DATA:",data)
+    print(data)
     return data
 	
 def checkDataContained(data,value):

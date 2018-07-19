@@ -1,0 +1,26 @@
+{% extends 'data_display/base.html' %}
+{% load search_filter %}
+{% load staticfiles %}
+        {% block content %}
+		<div class="col-2 col-md-5 col-sm-10 mt-4">
+			<div class="card mr-3">
+				<div class="card-header bg-dark text-light">Sign Up</div>
+					<form action="{% url 'account:signup' %}" method="post">
+						{% csrf_token %}
+						{% for field in form %}
+						<div class="form-group p-2">
+							{% if field.type == password %}
+								<label >{{ field.html_name }}</label>
+								{{field}}
+							{% else %}
+								<label >{{ field.html_name }}</label>
+								{{field}}
+							{% endif %}
+							{{ field.errors}}
+						</div>
+						{% endfor %}
+						<input type="submit" class="btn btn-primary m-3" value="Signup">
+					</form>
+			</div>
+		</div>
+		{% endblock %}
