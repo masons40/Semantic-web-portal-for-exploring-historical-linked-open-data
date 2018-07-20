@@ -3,9 +3,8 @@
 {% load staticfiles %}
 {% block content %}
 
-		<div class="col-9" style="margin: 40px 40px;">
-			
-			<table class="table table-bordered" style="width:40%;">
+		<div class="col-5" style="margin: 40px 40px;" >
+			<table class="table table-bordered" style="width:60%;">
 				<tbody>
 				<thead class="thead-dark">
 					<tr>
@@ -36,7 +35,7 @@
 								{% imageTest wordData as testIfImage2 %}
 								
 								{% if testIfImage2 %}
-									<td class="imageToShow" data-id="{% makeImageName %}" >{{wordData}}<i class="fa fa-image testClass" style="margin-left:3px;"></i></td>
+									<td>{{wordData}}<i class="fa fa-image testClass" data-id="{% makeImageName %}" style="margin-left:3px;"></i></td>
 									{% addImageSource wordData%}
 								{% else %}
 								    <td>{{wordData}}</td>
@@ -54,7 +53,7 @@
 										<input type="hidden" class="form-control" name="targetUri" value="{% getData firstIndex 'value' 0 %}">
 										<input type="hidden" class="form-control" name="attributeName" value="{% getData firstIndex 'shortname' 0 %}">
 										<input type="hidden" class="form-control" name="oldValue" value="{% getData firstIndex 'shortname' 1 %}">
-										<button class="btn btn-outline-success" type="submit" style="margin-left:14px;"><i class="fa fa-save"></i></button>
+										<button class="btn btn-outline-success" type="submit" style="margin-left:18px;"><i class="fa fa-save"></i></button>
 										{{ field.errors}}
 									</div>
 								{% endfor %}
@@ -65,8 +64,23 @@
 				</tbody>
 			</table>
 		</div>
-		{% imagesRange as ranges %}
-		{% for i in ranges %}
-			<img src="{% static 'images/bg.jpg' %}" alt="bg.png" width="200px" height="200px" style="display:none;position:absolute;right:1;z-index:100;" id="{% makeNewImageName i %}"/>
-		{% endfor %}
+		<style>
+			.imageToShow{
+				display:none;
+				position:absolute;
+				top:0;
+				transform:translateY(50%);
+				z-index:100;
+				max-width:400px;
+				max-height:400px;
+				border:1px solid white;
+				box-shadow: -10px 10px 2px 2px #c6c6c6;
+			}
+		</style>
+		<div class="col-4">
+			{% imagesRange as ranges %}
+			{% for i in ranges %}
+				<img src="{% static 'images/bg.jpg' %}" alt="bg.png" class="imageToShow" id="{% makeNewImageName i %}"/>
+			{% endfor %}
+		</div>
 {% endblock %}

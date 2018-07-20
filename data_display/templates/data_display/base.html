@@ -50,14 +50,14 @@
 						  Menu
 						</a>
 						<div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
-							<a class="dropdown-item" href="Questionnaire">Questionnaires</a>
-							<a class="dropdown-item" href="Question">Questions</a>
-							<a class="dropdown-item" href="data_display/Source">Sources</a>
-							<a class="dropdown-item" href="data_display/Multimedia">Multimedias</a>
-							<a class="dropdown-item" href="data_display/PaperSlip">PaperSlips</a>
-							<a class="dropdown-item" href="data_display/PaperSlip Record">PaperSlip Records</a>
-							<a class="dropdown-item" href="data_display/Lemma">Lemmas</a>
-							<a class="dropdown-item" href="data_display/Person">Persons</a>
+							<a class="dropdown-item" href="{% url 'data_display:index' type='Questionnaire' amount=10 offset=1 %}">Questionnaires</a>
+							<a class="dropdown-item" href="{% url 'data_display:index' type='Question' amount=10 offset=1 %}">Questions</a>
+							<a class="dropdown-item" href="{% url 'data_display:index' type='Source' amount=10 offset=1 %}">Sources</a>
+							<a class="dropdown-item" href="{% url 'data_display:index' type='Multimedia' amount=10 offset=1 %}">Multimedias</a>
+							<a class="dropdown-item" href="{% url 'data_display:index' type='PaperSlip' amount=10 offset=1 %}">PaperSlips</a>
+							<a class="dropdown-item" href="{% url 'data_display:index' type='PaperSlipRecord' amount=10 offset=1 %}">PaperSlip Records</a>
+							<a class="dropdown-item" href="{% url 'data_display:index' type='Lemma' amount=10 offset=1 %}">Lemmas</a>
+							<a class="dropdown-item" href="{% url 'data_display:index' type='Person' amount=10 offset=1 %}">Persons</a>
 						</div>
 					</li>
 				</ul>
