@@ -24,17 +24,19 @@
 								{% getData firstIndex 'shortname' secondIndex as wordData %}
 								<!-- will create a link -->
 								{% imageTest wordData as testIfImage %}
+								
 								{% if testIfImage %}
-								    <td><a href="{% test urlData %}" data-toggle="tooltip" data-html="true" title="{% extraction urlData %}" class="imageToShow" data-id="{% makeImageName %}">{{wordData}}</a></td>
+								    <td ><a href="{% test urlData %}" data-toggle="tooltip" data-html="true" title="{% extraction urlData %}" >{% makeImageName %}{{wordData}}</a></td>
 									{% addImageSource wordData%}
 								{% else %}
-							        <td><a href="{% test urlData %}" data-toggle="tooltip" data-html="true" title="{% extraction urlData %}">{{wordData}}</a></td>
+							        <td ><a href="{% test urlData %}" data-toggle="tooltip" data-html="true" title="{% extraction urlData %}">{{wordData}}</a></td>
 								{% endif %}
 							{% else %}
 								{% getData firstIndex 'shortname' secondIndex as wordData %}
-								{% imageTest wordData as testIfImage %}
-								{% if testIfImage %}
-									<td class="imageToShow" data-id="{% makeImageName %}" >{{wordData}}</td>
+								{% imageTest wordData as testIfImage2 %}
+								
+								{% if testIfImage2 %}
+									<td class="imageToShow" data-id="{% makeImageName %}" >{{wordData}}<i class="fa fa-image testClass" style="margin-left:3px;"></i></td>
 									{% addImageSource wordData%}
 								{% else %}
 								    <td>{{wordData}}</td>
@@ -62,9 +64,9 @@
 				{% endfor %}
 				</tbody>
 			</table>
-			{% imagesRange as ranges %}
-			{% for i in ranges %}
-			    <img src="{% static 'images/dcu.png' %}" alt="dcu.png" style="position:absolute;top:10;left:10;" data-id="{% makeNewImageName i %}"/>
-			{% endfor %}
 		</div>
+		{% imagesRange as ranges %}
+		{% for i in ranges %}
+			<img src="{% static 'images/bg.jpg' %}" alt="bg.png" width="200px" height="200px" style="display:none;position:absolute;right:1;z-index:100;" id="{% makeNewImageName i %}"/>
+		{% endfor %}
 {% endblock %}

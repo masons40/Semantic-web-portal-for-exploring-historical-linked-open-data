@@ -245,7 +245,7 @@ def makeName(firstIndex):
 def getSelected(selected):
     newUrl = 'http://exploreat.adaptcentre.ie/'+str(selected)+'10/1'
     context = retData(newUrl)
-    print(context)
+
 
 @register.simple_tag()
 def backTen(amount, offset, type):
@@ -258,6 +258,17 @@ def backTen(amount, offset, type):
 	
 @register.simple_tag()
 def forwardTen(amount, offset, type):
-    newAmount = int(amount)+10
     newOffset = int(offset)+10
-    return '../../../../data_display/'+str(type)+'/'+str(newAmount)+'/'+str(newOffset)
+    return '../../../../data_display/'+str(type)+'/'+str(amount)+'/'+str(newOffset)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

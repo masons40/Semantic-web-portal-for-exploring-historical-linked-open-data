@@ -47,7 +47,7 @@ def index(request,type=None,amount=None,offset=None):
             offsetN = int(offset)+int(right)
             newUrl = url2 + type
             
-            context = getAllInfo(newUrl,amountN,offsetN,type)
+            context = getAllInfo(newUrl,amount,offsetN,type)
             
             return render(request, 'data_display/index.html',context)
         except:
@@ -142,7 +142,7 @@ def retData(stringUrl):
 	
 def getAllInfo(url,amount,offset,type):
     newUrl = url + '/' + str(amount) + '/' + str(offset)
-    print(newUrl)
+
     data={}
     
     response = requests.get(newUrl)
@@ -150,19 +150,17 @@ def getAllInfo(url,amount,offset,type):
     results = ""
     results = todos["results"]
     bindings = todos["results"]["bindings"]
-    endRange=0
     index = 0
   
     for binding in bindings:
         if checkDataContained(data,binding['s']['value']) != True:
             data[index] = binding['s']['value']
             index += 1
-            endRange+=1
-    data['range'] = range(int(offset)-1,endRange)
+    data['range'] = range(0,index)
     data['type'] = type
     data['amount'] = amount
     data['offset'] = offset
-    print(data)
+
     return data
 	
 def checkDataContained(data,value):

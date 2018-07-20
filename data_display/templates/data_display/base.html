@@ -156,7 +156,7 @@
 						<a href="{% url 'data_display:index' type='PaperSlipRecord' amount=10 offset=1 %}" class="list-group-item" >PaperSlip Records</a>
 					</li>
 					<li style="list-style-type:none;">
-						<a href="{% url 'data_display:index' type='Lemma' amount=20 offset=1 %}" class="list-group-item" >Lemmas</a>
+						<a href="{% url 'data_display:index' type='Lemma' amount=10 offset=1 %}" class="list-group-item" >Lemmas</a>
 					</li>
 					<li style="list-style-type:none;">
 						<a href="{% url 'data_display:index' type='Person' amount=10 offset=1 %}" class="list-group-item" >Persons</a>
@@ -241,7 +241,10 @@
 		<script>
 		$(document).ready(function(){
 			$('[data-toggle="tooltip"]').tooltip();  
-
+			$('.testClass').click(function(){
+				var attr = $(this).attr('data-id');
+				$('#' + attr).toggle("show");
+			});
 			$("#select1").change(function() {
 				if ($(this).data('options') === undefined) {
 					/*Taking an array of all options-2 and kind of embedding it on the select1*/
