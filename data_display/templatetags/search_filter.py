@@ -29,14 +29,16 @@ def word(string,findCharacter,secondCharacter):
 def findName(stringUrl):
     position = stringUrl.rfind('/')
     return stringUrl[position+1:len(stringUrl)]
+	
 @register.simple_tag(takes_context=True)
 def getTitle(context, type, indexPos):
 
     num = int(indexPos)
-    newDic = retData(context[num])
-	
+    newDic = retData(context[num]) #context is a dictionary of urls(subjects) with values like "http://exploreat.adaptcentre.ie/Questionnaire/1"
+    #retData will return all the related data to the subject, ie. title,label,hasAuthor etc
     try:
         for key,value in newDic.items():
+            #look for the label and return it
             if value['shortname'][0] == 'label':
                 newName = value['shortname'][1] 
                 return newName[0:13]+'...'
@@ -86,9 +88,10 @@ def retData(stringUrl):
     return data;
 @register.simple_tag(takes_context=True)
 def getTypeForIndex(context,urlNum,num):
+    #num is a boolean, context contains a dictionary of subjects 
     dic = retData(context[urlNum])
     if num:
-        return dic['type'] + "/" + dic['id']
+        return dic['type'] + "/" + dic['id'] #will return a url for navigation such as Questionnaire/1 
     return dic['type'] + " " + dic['id']
 	
 def getType(url):
@@ -110,9 +113,10 @@ def rangeForIndex():
 	
 @register.simple_tag(takes_context=True)
 def getInfoForIndex(context,firstNum,secondNum):
-    dic = retData(context[firstNum])
-    val = dic[secondNum]['shortname'][1]
-    return dic[secondNum]['shortname'][0] + ": " + val[0:9] + "..."
+    # in this case context is a dictionary of subjects containing urls.
+    dic = retData(context[firstNum]) #return all information about the url ie,title label etc. firstnum is from the first range (0,10)
+    val = dic[secondNum]['shortname'][1] #will return the predicate to be shown. ie, label,title etc
+    return dic[secondNum]['shortname'][0] + ": " + val[0:9] + "..." #predication and object value will be returned
 
 @register.simple_tag()	
 def getQuestions():

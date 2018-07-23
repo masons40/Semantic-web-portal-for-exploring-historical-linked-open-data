@@ -2,20 +2,20 @@
 {% load search_filter %}
 {% load staticfiles %}
 {% block content %}
-
+		<!-- a dictionary will be parsed into this section containing 10 subjects --> 
 		<div class="col-10 ">
 			<div class="row" style="margin:10px auto">
-					{% for i in range %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
+					{% for i in range %} <!-- range returns a range data type from the dictionary ie, how many subjects were in the url -->
 					    <div class="card col-sm-10 col-md-3 col-lg-2 m-3 p-0 m-1">
-							<div class="card-header bg-dark text-light">{% getTitle type i%}</div>
+							<div class="card-header bg-dark text-light">{% getTitle type i%}</div> <!-- get the title of the subject -->
 							<ul class="list-group list-group-flush">
-							    {% rangeForIndex as rangeTwo%}
+							    {% rangeForIndex as rangeTwo%} <!-- will return a range (0,3) this is to display 3 pieces of info per car -->
 							    {% for j in rangeTwo %}
 									<li class="list-group-item text-black-50 " style="text-align:left;background-color:white;" >{% getInfoForIndex i j%}</li>
 								{% endfor %}
 							</ul>
-							{% getTypeForIndex i True as type %}
-							{% makeUrl type as url%}
+							{% getTypeForIndex i True as type %} 
+							{% makeUrl type as url%} <!-- creates a url for naviagtion -->
 							<a href="{{url}}" class="btn btn-primary m-2">View more</a>
 						</div>
 					{% endfor %}
@@ -24,6 +24,7 @@
            
 		</div>
 		
+		<!-- next/previous page arrows -->
 		<div class="row" style="margin:0 auto;margin-bottom:70px;">
 			<a href="{% backTen amount offset type%}" class="btn btn-primary m-1"><i class="fa fa-arrow-left"></i></a>
 			<a href="{% forwardTen amount offset type%}" class="btn btn-primary m-1"><i class="fa fa-arrow-right"></i></a>

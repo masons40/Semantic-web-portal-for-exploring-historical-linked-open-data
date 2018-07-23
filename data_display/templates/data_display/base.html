@@ -257,42 +257,51 @@
 				
 				var opt = []
 				if(choice === "Questionnaire"){
-				    var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+				    var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year','Has Multimedia'];
 					for(var i=0;i<attributeList.length;i++){
 						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
 					}
 				}else if(choice == "Question"){
-					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					var attributeList = ['Combined Id','Number','Original Question','Short Question','Is Question Of'];
 					for(var i=0;i<attributeList.length;i++){
 						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
 					}
 				}else if(choice == "Source"){
-					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					var attributeList = ['Title','Label','Has Subtitle','Volume Title','Volume','Series Title','Series Number','Edition','Place Of Publication',
+					'Year Of Publication','Publisher','isbn','Page Range','Has URL','hyperl Link Creation Date','Creator','Editor','Has Short Title',
+					'Long Title','Reference Quotation Page','Quotation Column','Original Data','Checked','Note','Has Multimedia'];
 					for(var i=0;i<attributeList.length;i++){
 						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
 					}
 				}else if(choice == "Multimedia"){
-					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					var attributeList = ['File Name','Title','Label','Released','Checked','Note','Type'];
 					for(var i=0;i<attributeList.length;i++){
 						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
 					}
 				}else if(choice == "PaperSlip"){
-					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					var attributeList = ['Label','Catalog','Drawer','Section','Virtual','Source','Source Paragraph','Source Number','Source Quoted'
+					,'Source Quoted Page','Source Paragraph','Source Quoted Map','Source Quoted Number','Year Of Record','Location','Original Etymology'
+					,'Revised Etymology','Facts','Comment','Original Reference','Revised Reference','Original Data','Released','Checked','Note','Has Source',
+					'Has Multimedia'];
 					for(var i=0;i<attributeList.length;i++){
 						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
 					}
 				}else if(choice == "PaperSlipRecord"){
-					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					var attributeList = ['Title','Label','Grammar','Paper Slip Record Classification','Contains Question','Has Lemma','Has Reference Lemma',
+					'Has Paper Slip','Has Paper Slip Record Note','Has Multimedia','Definition','Note'];
 					for(var i=0;i<attributeList.length;i++){
 						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
 					}
 				}else if(choice == "Person"){
-					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					var attributeList = ['First Name','Last Name','Label','Birthday','Birth Month','Birth Year','Birth Place','Death Place','Death Day',
+					'Death Month','Death Year','Death Place','Gender','Address','Postcode','Place','Email','Telephone','Course Of Address','Contact Person',
+					'Relations','Has Education'];
 					for(var i=0;i<attributeList.length;i++){
 						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
 					}
 				}else if(choice == "Lemma"){
-					var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year']
+					var attributeList = ['Type','Composed Of','Derived From','Label','High German','wbo','wboHomographe','wboSort','dbo','dboHomographe'
+					,'dboSort','dboType','wboDefinition','Release','Checked','Note','Has Lemma','Has Multimedia'];
 					for(var i=0;i<attributeList.length;i++){
 						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
 					}

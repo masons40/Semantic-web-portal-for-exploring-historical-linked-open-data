@@ -106,7 +106,7 @@ def retData(stringUrl):
     results = todos["results"]
     bindings = todos["results"]["bindings"]
    
-    i=0;
+    i=0
     type=[]
     value=[]
     shortname=[]
@@ -137,13 +137,61 @@ def retData(stringUrl):
     data['id'] = findName(stringUrl)
     data['range'] = range(0,len(data)-2)
     data['form'] = forms.changeForm()
-    
-    return data;
+    """
+        example dictionary created by retData, each bit of info from the entity will have a sub dictionary telling the user of the type and value
+        ,shortnames is there for display purposes. notice how in the sub-dictionary (0) that value[0] = 'http://www.w3.org/2000/01/rdf-schema#label' this is the prediacte
+        with the object value = value[1], type[0] tell us that the predicate value is a uri and the corresponding object value is a literal
+    {
+        'name': 'Fragebogen 2: Die Osterwoche (1)', 
+        0:  {
+                'type': ['uri', 'literal'], 
+                'value': ['http://www.w3.org/2000/01/rdf-schema#label', 'Fragebogen 2: Die Osterwoche (1)'], 
+                'shortname': ['label', 'Fragebogen 2: Die Osterwoche (1)']
+            }, 
+        1:  {
+                'type': ['uri', 'literal'], 
+                'value': ['https://explorations4u.acdh.oeaw.ac.at/ontology/oldcan#note', 'bafb2'], 
+                'shortname': ['note', 'bafb2']
+            }, 
+        2:  {
+                'type': ['uri', 'uri'], 
+                'value': ['http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'https://explorations4u.acdh.oeaw.ac.at/ontology/oldcan#Questionnaire'],
+                'shortname': ['type', 'Questionnaire']
+            }, 
+        3:  {
+                'type': ['uri', 'uri'],
+                'value': ['http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'https://explorations4u.acdh.oeaw.ac.at/ontology/oldcan#SystematicQuestionnaire'],
+                'shortname': ['type', 'SystematicQuestionnaire']
+            }, 
+        4:  {
+                'type': ['uri', 'literal'], 
+                'value': ['https://explorations4u.acdh.oeaw.ac.at/ontology/oldcan#title', 'Fragebogen 2: Die Osterwoche (1)'],
+                'shortname': ['title', 'Fragebogen 2: Die Osterwoche (1)']
+            }, 
+        5:  {
+                'type': ['uri', 'uri'], 
+                'value': ['https://explorations4u.acdh.oeaw.ac.at/ontology/oldcan#hasAuthor', 'http://exploreat.adaptcentre.ie/Person/22192'], 
+                'shortname': ['hasAuthor', '22192']
+            }, 
+        6:  {
+                'type': ['uri', 'literal'], 
+                'value': ['https://explorations4u.acdh.oeaw.ac.at/ontology/oldcan#publicationYear', '1920'], 
+                'shortname': ['publicationYear', '1920']
+            }, 
+        'id': '2', 
+        'range': range(0, 7), 
+        'form': <changeForm bound=False, valid=Unknown, fields=(newValue)>
+	}
+		form in this case will have values from forms.py (just newValue)
+        range(0,7) is because the entity contained 6 piece of information
+    """
+    return data
 	
 def getAllInfo(url,amount,offset,type):
+    # getAllInfo is used to gather 10 subjects of an entity. ie, the first 10 questionnaires etc. 
     newUrl = url + '/' + str(amount) + '/' + str(offset)
-
-    data={}
+    # newUrl could look like https//:explo...../Questionnaire/10/1
+    data={} #empty dictionary to store teh subjects we recieve
     
     response = requests.get(newUrl)
     todos = json.loads(response.text)
@@ -151,7 +199,7 @@ def getAllInfo(url,amount,offset,type):
     results = todos["results"]
     bindings = todos["results"]["bindings"]
     index = 0
-  
+    # the returned JSON actually contains repetitions of the same url, so we check for duplicates with checkDataContained(which takes in the current dictionary, and the value to test for)
     for binding in bindings:
         if checkDataContained(data,binding['s']['value']) != True:
             data[index] = binding['s']['value']
@@ -160,11 +208,30 @@ def getAllInfo(url,amount,offset,type):
     data['type'] = type
     data['amount'] = amount
     data['offset'] = offset
-
+    #add the additional information to the dictionary such as range, offset etc. this is used in the hmtl template to display information
+    """
+        example of show the created dictionary would look with all the data
+    {
+        0: 'http://exploreat.adaptcentre.ie/Questionnaire/2', 
+        1: 'http://exploreat.adaptcentre.ie/Questionnaire/3', 
+        2: 'http://exploreat.adaptcentre.ie/Questionnaire/4', 
+        3: 'http://exploreat.adaptcentre.ie/Questionnaire/5', 
+        4: 'http://exploreat.adaptcentre.ie/Questionnaire/6', 
+        5: 'http://exploreat.adaptcentre.ie/Questionnaire/7', 
+        6: 'http://exploreat.adaptcentre.ie/Questionnaire/8', 
+        7: 'http://exploreat.adaptcentre.ie/Questionnaire/9', 
+        8: 'http://exploreat.adaptcentre.ie/Questionnaire/10', 
+        9: 'http://exploreat.adaptcentre.ie/Questionnaire/11', 
+        'range': range(0, 10), 
+        'type': 'Questionnaire', 
+        'amount': '10', 
+        'offset': '1'
+    }
+	"""
     return data
 	
 def checkDataContained(data,value):
-    i=0;
+    i=0
     for k,v in data.items():
         if value == v:
             return True
