@@ -1,6 +1,9 @@
 import json
 import requests
 import datetime as dt
+import rdflib
+from rdflib.graph import Graph
+from SPARQLWrapper import SPARQLWrapper,JSON
 from . import models
 from django.shortcuts import render
 from collections import defaultdict
@@ -67,6 +70,35 @@ def index(request,type=None,amount=None,offset=None):
     
     return render(request, 'data_display/base.html')
 	
+def search(request):
+    dataset="https://dboe-jena.hephaistos.arz.oeaw.ac.at/Questionnaire/query"
+    subject = request.POST['type']
+    predicate = request.POST['select2']
+    object = request.POST['val']
+    
+    #the query will strip the questionnaire number and replace http://localhost/oldca/fragebogen/1 in the query
+    sparql = SPARQLWrapper(dataset)
+    sparql.setQuery("""
+	
+                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    prefix oldcan: <https://explorations4u.acdh.oeaw.ac.at/ontology/oldcan#>
+
+                    SELECT *
+                    From named <http://exploreat.adaptcentre.ie/Questionnaire_graph>
+                    WHERE {
+                    Graph <http://exploreat.adaptcentre.ie/Questionnaire_graph>
+					?s ?p ?o.
+					?s """+ str(predicate) +""" ?o.
+					filter regex( ?o , """+ str(object) +""" ,"i")
+					} 
+                 """)
+    print(sparql)
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+    print(Response(results))
+    return Response(results)
+
 def infoDisplay(request,type,id):
     defaultStrUrl='http://exploreat.adaptcentre.ie/'
 

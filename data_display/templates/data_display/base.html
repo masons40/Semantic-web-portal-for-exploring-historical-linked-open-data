@@ -61,10 +61,10 @@
 						</div>
 					</li>
 				</ul>
-				<form method="post" action="{% url 'data_display:index' %}" class="form-inline">
+				<form method="post" action="{% url 'data_display:search' %}" class="form-inline">
 					{% csrf_token %}
 					<div class="form-inline">
-						<select name="type" class="form-control input-item" name="select1" id="select1">
+						<select name="type" class="form-control input-item" id="select1">
 							<option value="Questionnaire">Questionnaire</option>
 							<option value="Question">Question</option>
 							<option value="Source">Source</option>
@@ -74,14 +74,7 @@
 							<option value="Lemma">Lemma</option>
 							<option value="Person">Person</option>
 						</select>
-						<select name="type" class="form-control input-item" name="select2" id="select2">
-							<option value="Questionnaire">Label</option>
-							<option value="Questionnaire">Note</option>
-							<option value="Questionnaire">Type</option>
-							<option value="Questionnaire">Title</option>
-							<option value="Questionnaire">System</option>
-							<option value="Questionnaire">Has Author</option>
-							<option value="Questionnaire">Publication Year</option>
+						<select class="form-control input-item" name="select2" id="select2">
 						</select>
 						<input type="text" class="form-control " name="val" placeholder="Enter Value" aria-label="Search">
 						<button type="submit" class="btn btn-outline-success " style="margin-left:2px;">Search</button>
@@ -247,7 +240,7 @@
 			});
 			$("#select1").change(function() {
 				if ($(this).data('options') === undefined) {
-					/*Taking an array of all options-2 and kind of embedding it on the select1*/
+					
 					$(this).data('options', $('#select2 option').clone());
 				}
 				var id = $(this).val();
@@ -258,23 +251,30 @@
 				var opt = []
 				if(choice === "Questionnaire"){
 				    var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year','Has Multimedia'];
+					var attributeListVals = ['rdfs:label','oldcan:note','rdf:type','oldcan:title','oldcan:hasAuthor','oldcan:publicationYear','oldcan:hasMultimedia'];
 					for(var i=0;i<attributeList.length;i++){
-						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
+						opt[i] = "<option value="+attributeListVals[i]+">"+attributeList[i]+"</option>";
 					}
 				}else if(choice == "Question"){
 					var attributeList = ['Combined Id','Number','Original Question','Short Question','Is Question Of'];
+					var attributeListVals = ['oldcan:CombinedId','oldcan:number','oldcan:originalQuestion','oldcan:shortQuestion','oldcan:isQuestionOf'];
 					for(var i=0;i<attributeList.length;i++){
-						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
+						opt[i] = "<option value="+attributeListVals[i]+">"+attributeList[i]+"</option>";
 					}
 				}else if(choice == "Source"){
 					var attributeList = ['Title','Label','Has Subtitle','Volume Title','Volume','Series Title','Series Number','Edition','Place Of Publication',
 					'Year Of Publication','Publisher','isbn','Page Range','Has URL','hyperl Link Creation Date','Creator','Editor','Has Short Title',
 					'Long Title','Reference Quotation Page','Quotation Column','Original Data','Checked','Note','Has Multimedia'];
+					var attributeListVals = ['dc:title','rdfs:label','fabio:hasSubtitle','oldcan:volumeTitle','prism:volume','oldcan:seriesTitle','oldcan:seriesNumber'
+					,'oldcan:edition','oldcan:placeOfPublication','oldcan:yearOfPublication','dct:publisher','prism:isbn','prism:PageRange','fabio:hasURL'
+					,'oldcan:hyperlLinkCreationDate','dct:creator','oldcan:editor','fabio:hasShortTitle','oldcan:longTitle','oldcan:referenceQuotationPage'
+					,'oldcan:quotationColumn','oldcan:originalData','oldcan:checked','oldcan:note','oldcan:hasmultimedia'];
 					for(var i=0;i<attributeList.length;i++){
-						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
+						opt[i] = "<option value="+attributeListVals[i]+">"+attributeList[i]+"</option>";
 					}
 				}else if(choice == "Multimedia"){
 					var attributeList = ['File Name','Title','Label','Released','Checked','Note','Type'];
+					var attributeListVals = ['oldcan:fileName','dc:title','rdfs:label','oldcan:released','oldcan:checked','oldcan:note','rdf:type'];
 					for(var i=0;i<attributeList.length;i++){
 						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
 					}
@@ -283,6 +283,7 @@
 					,'Source Quoted Page','Source Paragraph','Source Quoted Map','Source Quoted Number','Year Of Record','Location','Original Etymology'
 					,'Revised Etymology','Facts','Comment','Original Reference','Revised Reference','Original Data','Released','Checked','Note','Has Source',
 					'Has Multimedia'];
+					
 					for(var i=0;i<attributeList.length;i++){
 						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
 					}
