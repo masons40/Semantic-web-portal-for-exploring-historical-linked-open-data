@@ -85,19 +85,19 @@ def search(request):
                     prefix oldcan: <https://explorations4u.acdh.oeaw.ac.at/ontology/oldcan#>
 
                     SELECT *
-                    From named <http://exploreat.adaptcentre.ie/Questionnaire_graph>
+                  
                     WHERE {
-                    Graph <http://exploreat.adaptcentre.ie/Questionnaire_graph>
 					?s ?p ?o.
-					?s """+ str(predicate) +""" ?o.
-					filter regex( ?o , """+ str(object) +""" ,"i")
+					?s rdf:type oldcan:Questionnaire.
+					
 					} 
+					limit 10
                  """)
     print(sparql)
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
-    print(Response(results))
-    return Response(results)
+    print(results)
+    return results
 
 def infoDisplay(request,type,id):
     defaultStrUrl='http://exploreat.adaptcentre.ie/'
