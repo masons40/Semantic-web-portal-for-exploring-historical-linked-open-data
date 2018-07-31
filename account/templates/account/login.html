@@ -2,14 +2,20 @@
 {% load search_filter %}
 {% load staticfiles %}
         {% block content %}
-		<div class="col-2 col-md-5 col-sm-10 mt-4">
-			<div class="card mr-3">
-			    <div class="card-header bg-dark text-light">Login</div>
+		<div class="col-10">
+			<div class="cent">
+				<div class="sign" id="login">
 					<form action="{% url 'account:login' %}" method="post">
 						{% csrf_token %}
-						{{ form }}
-						<button type="submit" class="btn btn-primary m-3" value="login">Login</button>
+						<h4>Login</h4>
+						{% for field in formLogin %}
+							<label>{{ field.html_name }}</label>
+							{{ field }}
+							<br>
+						{% endfor %}
+						<button type="submit">Login</button>
 					</form>
+				</div>
 			</div>
 		</div>
 		

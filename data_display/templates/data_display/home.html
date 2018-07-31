@@ -1,0 +1,23 @@
+{% extends 'data_display/base.html' %}
+{% load search_filter %}
+{% load staticfiles %}
+{% block content %}
+<div class="col-10">
+	<div class="cent">
+		<div class="sign" id="login">
+			<form action="{% url 'account:login' %}" method="post">
+				{% csrf_token %}
+				<h4>Login</h4>
+				{% for field in form %}
+					<label>{{ field.html_name }}</label>
+					{{ field }}
+					<br>
+				{% endfor %}
+				<button type="submit">Login</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

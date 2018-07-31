@@ -21,11 +21,14 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            username = request.user.username
+            loggedIn = True
+            context = {'username':username,'loggedIn':loggedIn}
             return redirect('data_display:index')
     else:
         form = AuthenticationForm()
 	
-    return render(request,'account/login.html',{'form':form})
+    return render(request,'account/login.html',{'formLogin':form})
 		
 def logout_view(request):
     logout(request)	

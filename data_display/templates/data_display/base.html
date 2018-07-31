@@ -2,315 +2,140 @@
 {% load search_filter %}
 {% load staticfiles %}
 <!DOCTYPE html>
-
 <html>
 	<head>
-		<title>Adapt LOD Project</title>
-		<meta lang="en">
-		<meta charset="utf-8">
-		<link rel="shortcut icon" href="{% static 'images/logo.png'%}" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link href="https://fonts.googleapis.com/css?family=Sunflower:300" rel="stylesheet">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+		<link rel="stylesheet" href="{% static 'css/DDStyle.css' %}" type="text/css">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet">
 	</head>
-	
-	<body> 
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<a class="navbar-brand" href="{% url 'account:index' %}">
-				<img src="{% static 'images/logo.png'%}" width="30" height="30" class="d-inline-block align-top" alt="">
-				<span class="menu-collapsed text-dark">ExploreAt! DCU</span>
+	<body>
+
+		<div class="topnav" id="myTopnav">
+			<a href="#home" class="active">
+				<img src="{% static 'images/logo.png' %}" class="d-inline-block align-top" alt="">
 			</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<i class="fa fa-caret-down"></i>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active mr-auto">
-						<form action="{% url 'account:login' %}" >
-							{% csrf_token %}
-							<button class="btn btn-default bg-light text-dark" >Login<span style="margin:2px;"></span><i class="fa fa-sign-in"></i></button>
-						</form>
-					</li>
-					<li class="nav-item active  mr-auto">
-						<form action="{% url 'account:logout' %}">
-							{% csrf_token %}
-							<button class="btn btn-default bg-light text-dark" >logout<span style="margin:2px;"></span><i class="fa fa-sign-out"></i></button>
-						</form>
-					</li>
-					<li class="nav-item active  mr-auto">
-						<form action="{% url 'account:signup' %}">
-							{% csrf_token %}
-							<button class="btn btn-default bg-light text-dark" >Sign Up<span style="margin:2px;"></span><i class="fa fa-sign-up"></i></button>
-						</form>
-					</li>
-					<li class="nav-item dropdown d-sm-block d-md-none">
-						<a class="nav-link dropdown-toggle" href="#" id="smallerscreenmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						  Menu
-						</a>
-						<div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
-							<a class="dropdown-item" href="{% url 'data_display:index' type='Questionnaire' amount=10 offset=1 %}">Questionnaires</a>
-							<a class="dropdown-item" href="{% url 'data_display:index' type='Question' amount=10 offset=1 %}">Questions</a>
-							<a class="dropdown-item" href="{% url 'data_display:index' type='Source' amount=10 offset=1 %}">Sources</a>
-							<a class="dropdown-item" href="{% url 'data_display:index' type='Multimedia' amount=10 offset=1 %}">Multimedias</a>
-							<a class="dropdown-item" href="{% url 'data_display:index' type='PaperSlip' amount=10 offset=1 %}">PaperSlips</a>
-							<a class="dropdown-item" href="{% url 'data_display:index' type='PaperSlipRecord' amount=10 offset=1 %}">PaperSlip Records</a>
-							<a class="dropdown-item" href="{% url 'data_display:index' type='Lemma' amount=10 offset=1 %}">Lemmas</a>
-							<a class="dropdown-item" href="{% url 'data_display:index' type='Person' amount=10 offset=1 %}">Persons</a>
-						</div>
-					</li>
-				</ul>
-				<form method="post" action="{% url 'data_display:search' %}" class="form-inline">
+			{% if not loggedIn %}
+				<form action="{% url 'account:login' %}" class="menuItem">
 					{% csrf_token %}
-					<div class="form-inline">
-						<select name="type" class="form-control input-item" id="select1">
-							<option value="Questionnaire">Questionnaire</option>
-							<option value="Question">Question</option>
-							<option value="Source">Source</option>
-							<option value="Multimedia">Multimedia</option>
-							<option value="PaperSlip">PaperSlip</option>
-							<option value="PaperSlipRecord">PaperSlipRecord</option>
-							<option value="Lemma">Lemma</option>
-							<option value="Person">Person</option>
-						</select>
-						<select class="form-control input-item" name="select2" id="select2">
-						</select>
-						<input type="text" class="form-control " name="val" placeholder="Enter Value" aria-label="Search">
-						<button type="submit" class="btn btn-outline-success " style="margin-left:2px;">Search</button>
-					</div>
+					<button>Sign In<i style="margin:2px;" class="fa fa-sign-out"></i></button>
 				</form>
-			</div>
-		</nav>
+			{% else %}
+				<form action="{% url 'account:logout' %}" class="menuItem">
+					{% csrf_token %}
+					<button>logout<i style="margin:2px;" class="fa fa-sign-out"></i></button>
+				</form>
+				<form action="{% url 'account:signup' %}" class="menuItem">
+					{% csrf_token %}
+					<button id="name" disabled>{{username}}</button>
+				</form>
+			{% endif %}
 
-		<div class="row">
-			<!-- Sidebar
-			<div class="container-fluid" id="menuToShow" style="display:none">
-				<div >
-					<ul class="list-group">
-						
-						<a href="{% url 'data_display:index' type='Questionnaire' amount=10 offset=1 %}" class="list-group-item" >
-							Questionnaires
-						</a>
 
-						<a href="{% url 'data_display:index' type='Question' amount=10 offset=1 %}" class="list-group-item" >
-							Questions
-						</a>
-
-						<a href="{% url 'data_display:index' type='Source' amount=10 offset=1 %}" class="list-group-item" >
-							Sources
-						</a>
-
-						<a href="{% url 'data_display:index' type='Multimedia' amount=10 offset=1 %}" class="list-group-item">
-							Multimedias
-						</a>
-
-						<a href="{% url 'data_display:index' type='PaperSlip' amount=10 offset=1 %}" class="list-group-item" >
-							PaperSlips
-						</a>
-
-						<a href="{% url 'data_display:index' type='PaperSlipRecord' amount=10 offset=1 %}" class="list-group-item" >
-							PaperSlip Records
-						</a>
-
-						<a href="{% url 'data_display:index' type='Lemma' amount=10 offset=1 %}" class="list-group-item" >
-							Lemmas
-						</a>
-
-						<a href="{% url 'data_display:index' type='Person' amount=10 offset=1 %}" class="list-group-item" >
-							Person
-						</a>
-						
-					</ul>
-					
-					
-				</div>
-			</div>
-			-->
-			
-			<aside class="col-2">
-				<ul>
-					<li style="list-style-type:none;">
-						<a href="{% url 'data_display:index' type='Questionnaire' amount=10 offset=1 %}" class="list-group-item" >Questionnaires</a>
-					</li>
-					<li style="list-style-type:none;">
-						<a href="{% url 'data_display:index' type='Question' amount=10 offset=1 %}" class="list-group-item" >Questions</a>
-					</li>
-					<li style="list-style-type:none;">
-						<a href="{% url 'data_display:index' type='Source' amount=10 offset=1 %}" class="list-group-item" >Sources</a>
-					</li>
-					<li style="list-style-type:none;">
-						<a href="{% url 'data_display:index' type='Multimedia' amount=10 offset=1 %}" class="list-group-item" >Multimedias</a>
-					</li>
-					<li style="list-style-type:none;">
-						<a href="{% url 'data_display:index' type='PaperSlip' amount=10 offset=1 %}" class="list-group-item" >PaperSlips</a>
-					</li>
-					<li style="list-style-type:none;">
-						<a href="{% url 'data_display:index' type='PaperSlipRecord' amount=10 offset=1 %}" class="list-group-item" >PaperSlip Records</a>
-					</li>
-					<li style="list-style-type:none;">
-						<a href="{% url 'data_display:index' type='Lemma' amount=10 offset=1 %}" class="list-group-item" >Lemmas</a>
-					</li>
-					<li style="list-style-type:none;">
-						<a href="{% url 'data_display:index' type='Person' amount=10 offset=1 %}" class="list-group-item" >Persons</a>
-					</li>
-				</ul>
-			</aside>
-			{% block content%}
-			
-			{% endblock %}
-
+			<form method="post" action="{% url 'data_display:search' %}" class="form-inline menuItem" >
+				{% csrf_token %}
+				<select name="type" id="select1" class="formInputs">
+					<option value="Questionnaire">Questionnaire</option>
+					<option value="Question">Question</option>
+					<option value="Source">Source</option>
+					<option value="Multimedia">Multimedia</option>
+					<option value="PaperSlip">PaperSlip</option>
+					<option value="PaperSlipRecord">PaperSlipRecord</option>
+					<option value="Lemma">Lemma</option>
+					<option value="Person">Person</option>
+				</select>
+				<select name="select2" id="select2" class="formInputs">
+					<option value="rdfs:label">Label</option>
+					<option value="oldcan:note">Note</option>
+					<option value="rdf:type">Type</option>
+					<option value="oldcan:title">Title</option>
+					<option value="oldcan:hasAuthor">Has Author</option>
+					<option value="oldcan:publicationYear">Publication Year</option>
+					<option value="oldcan:hasMultimedia">Has Multimedia</option>
+				</select>
+				<input type="text" class="formInputs" name="val" id="textInput" placeholder="Enter Value" aria-label="Search" style="color:white;">
+				<button type="submit" class="formInputs" id="formButton"><i class="fa fa-search"></i></button>
+			</form>
+			<a style="font-size:15px;" class="icon"><i class="fa fa-bars"></i></a>
 		</div>
 		
-		<!-- Footer -->
-		<footer class="page-footer font-small bg-light" style="border-top:1px solid #8e8e8e;width:100%;box-shadow: 0 0 2px 2px #8e8e8e;position:fixed;bottom:0;">
-
-			<!-- Footer Links -->
-			<div class="container-fluid">
-				<div class="row">
-
-					<!-- Grid column -->
-					<div class="col-md-6">
-
-						<!-- Links -->
-						<ul class="list-unstyled text-center">
-							<li class="d-inline-block m-1">
-								<a  href="http://exploreat.adaptcentre.ie/#Semantics">Semantics</a>
-							</li>
-							<li class="d-inline-block m-1">
-								<a  href="http://exploreat.adaptcentre.ie">ExploreAt!</a>
-							</li>
-							<li class="d-inline-block m-1">
-								<a  href="http://exploreat.adaptcentre.ie/#people">People</a>
-							</li>
-							<li class="d-inline-block m-1">
-								<a  href="http://exploreat.adaptcentre.ie/#about">About</a>
-							</li>
-						</ul>
-
-					</div>
-					<div class="col-md-6 text-center" >
-					    <div >© 2018 Copyright:
-							<a href="http://exploreat.adaptcentre.ie" > ExploreAt! DCU</a>
-						</div>
-					</div>
-
+		<div class="container-fluid" >
+			<div class="row">
+				<div class="col-2" id="sideM">
+					<ul id="sideMenu" >
+						<li>
+							<a href="{% url 'data_display:index' type='Questionnaire' amount=10 offset=1 %}" >Questionnaires</a>
+						</li>
+						<li>
+							<a href="{% url 'data_display:index' type='Question' amount=10 offset=1 %}" >Questions</a>
+						</li>
+						<li>
+							<a href="{% url 'data_display:index' type='Source' amount=10 offset=1 %}" >Sources</a>
+						</li>
+						<li>
+							<a href="{% url 'data_display:index' type='Multimedia' amount=10 offset=1 %}" >Multimedias</a>
+						</li>
+						<li>
+							<a href="{% url 'data_display:index' type='PaperSlip' amount=10 offset=1 %}" >PaperSlips</a>
+						</li>
+						<li>
+							<a href="{% url 'data_display:index' type='PaperSlipRecord' amount=10 offset=1 %}" >PaperSlip Records</a>
+						</li>
+						<li>
+							<a href="{% url 'data_display:index' type='Lemma' amount=10 offset=1 %}" >Lemmas</a>
+						</li>
+						<li>
+							<a href="{% url 'data_display:index' type='Person' amount=10 offset=1 %}" >Persons</a>
+						</li>
+					</ul>
 				</div>
-				
-				<!--
-				<div class="row">
-
-					
-					<div class="col-md-10 mt-md-0 mt-3 d-none d-md-block">
-						<div class="d-inline-block ml-3" >
-							<img src="{% static 'images/ies.png'%}"  />
-						</div>
-						<div class="d-inline-block ml-3">
-							<img src="{% static 'images/sfi.png'%}" />
-						</div>
-						<div class="d-inline-block ml-3">
-							<img src="{% static 'images/eur.png'%}" />
-						</div>
-						<div class="d-inline-block ml-3">
-							<img src="{% static 'images/tcd.png'%}" />
-						</div>
-						<div class="d-inline-block ml-3">
-							<img src="{% static 'images/dit.png'%}" />
-						</div>
-						<div class="d-inline-block ml-3">
-							<img src="{% static 'images/dcu.png'%}" />
-						</div>
-						<div class="d-inline-block ml-3">
-							<img src="{% static 'images/ucd.png'%}" />
+				<div class="row mobileVersion" >
+					<div class="navigate">
+						<button class="dropBtn">Questionnaire<i class="fa fa-caret-down"></i></button>
+						<div class="dropdown-content">
+							<a class="dropdown-item" href="{% url 'data_display:index' type='Questionnaire' amount=10 offset=1 %}">Questionnaires</a>
+								<a href="{% url 'data_display:index' type='Question' amount=10 offset=1 %}">Questions</a>
+								<a href="{% url 'data_display:index' type='Source' amount=10 offset=1 %}">Sources</a>
+								<a href="{% url 'data_display:index' type='Multimedia' amount=10 offset=1 %}">Multimedias</a>
+								<a href="{% url 'data_display:index' type='PaperSlip' amount=10 offset=1 %}">PaperSlips</a>
+								<a href="{% url 'data_display:index' type='PaperSlipRecord' amount=10 offset=1 %}">PaperSlip Records</a>
+								<a href="{% url 'data_display:index' type='Lemma' amount=10 offset=1 %}">Lemmas</a>
+								<a href="{% url 'data_display:index' type='Person' amount=10 offset=1 %}">Persons</a>
 						</div>
 					</div>
-					
-                </div> -->
-		</footer>
+				</div>
+				{% block content %}
+				{% endblock %}
+			</div>
+			<hr>
+			{% if displayCards %}
+				<div class="row">
+					<div class="btn-container">
+						<div class="navigation" >
+							<a href="{% backTen amount offset type%}" class="btn"><i class="fa fa-arrow-left" style="color:white;"></i></a>
+							<a href="{% forwardTen amount offset type%}" class="btn" ><i class="fa fa-arrow-right" style="color:white;"></i></a>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+			<div class="row">
+				<footer>
+					<ul>
+						<li id="copyRights"><h4>Copy Right &copy 2018 ExploreAt Centre</h4></li>
+						<li class="crImages"><img src="{% static 'images/dcu.png' %}" width="60px;" height="60px" /></li>
+						<li class="crImages"><img src="{% static 'images/ucd.jpg' %}" width="60px;" height="60px" /></li>
+						<li class="crImages"><img src="{% static 'images/dit.jpg' %}" width="60px;" height="60px" /></li>
+						<li class="crImages"><img src="{% static 'images/trinity.jpg' %}" width="60px;" height="60px" /></li>
+					</ul>
+				</footer>
+			</div>
+		</div>
+
+		
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-		<script src={% static 'script/styleScripting.js' %} ></script>
-		<script>
-		$(document).ready(function(){
-			$('[data-toggle="tooltip"]').tooltip();  
-			$('.testClass').click(function(){
-				var attr = $(this).attr('data-id');
-				$('#' + attr).toggle("show");
-			});
-			$("#select1").change(function() {
-				if ($(this).data('options') === undefined) {
-					
-					$(this).data('options', $('#select2 option').clone());
-				}
-				var id = $(this).val();
-
-				var choice = $(this).val();
-				var options = $(this).data('options');
-				
-				var opt = []
-				if(choice === "Questionnaire"){
-				    var attributeList = ['Label','Note','Type','Title','Has Author','Publication Year','Has Multimedia'];
-					var attributeListVals = ['rdfs:label','oldcan:note','rdf:type','oldcan:title','oldcan:hasAuthor','oldcan:publicationYear','oldcan:hasMultimedia'];
-					for(var i=0;i<attributeList.length;i++){
-						opt[i] = "<option value="+attributeListVals[i]+">"+attributeList[i]+"</option>";
-					}
-				}else if(choice == "Question"){
-					var attributeList = ['Combined Id','Number','Original Question','Short Question','Is Question Of'];
-					var attributeListVals = ['oldcan:CombinedId','oldcan:number','oldcan:originalQuestion','oldcan:shortQuestion','oldcan:isQuestionOf'];
-					for(var i=0;i<attributeList.length;i++){
-						opt[i] = "<option value="+attributeListVals[i]+">"+attributeList[i]+"</option>";
-					}
-				}else if(choice == "Source"){
-					var attributeList = ['Title','Label','Has Subtitle','Volume Title','Volume','Series Title','Series Number','Edition','Place Of Publication',
-					'Year Of Publication','Publisher','isbn','Page Range','Has URL','hyperl Link Creation Date','Creator','Editor','Has Short Title',
-					'Long Title','Reference Quotation Page','Quotation Column','Original Data','Checked','Note','Has Multimedia'];
-					var attributeListVals = ['dc:title','rdfs:label','fabio:hasSubtitle','oldcan:volumeTitle','prism:volume','oldcan:seriesTitle','oldcan:seriesNumber'
-					,'oldcan:edition','oldcan:placeOfPublication','oldcan:yearOfPublication','dct:publisher','prism:isbn','prism:PageRange','fabio:hasURL'
-					,'oldcan:hyperlLinkCreationDate','dct:creator','oldcan:editor','fabio:hasShortTitle','oldcan:longTitle','oldcan:referenceQuotationPage'
-					,'oldcan:quotationColumn','oldcan:originalData','oldcan:checked','oldcan:note','oldcan:hasmultimedia'];
-					for(var i=0;i<attributeList.length;i++){
-						opt[i] = "<option value="+attributeListVals[i]+">"+attributeList[i]+"</option>";
-					}
-				}else if(choice == "Multimedia"){
-					var attributeList = ['File Name','Title','Label','Released','Checked','Note','Type'];
-					var attributeListVals = ['oldcan:fileName','dc:title','rdfs:label','oldcan:released','oldcan:checked','oldcan:note','rdf:type'];
-					for(var i=0;i<attributeList.length;i++){
-						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
-					}
-				}else if(choice == "PaperSlip"){
-					var attributeList = ['Label','Catalog','Drawer','Section','Virtual','Source','Source Paragraph','Source Number','Source Quoted'
-					,'Source Quoted Page','Source Paragraph','Source Quoted Map','Source Quoted Number','Year Of Record','Location','Original Etymology'
-					,'Revised Etymology','Facts','Comment','Original Reference','Revised Reference','Original Data','Released','Checked','Note','Has Source',
-					'Has Multimedia'];
-					
-					for(var i=0;i<attributeList.length;i++){
-						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
-					}
-				}else if(choice == "PaperSlipRecord"){
-					var attributeList = ['Title','Label','Grammar','Paper Slip Record Classification','Contains Question','Has Lemma','Has Reference Lemma',
-					'Has Paper Slip','Has Paper Slip Record Note','Has Multimedia','Definition','Note'];
-					for(var i=0;i<attributeList.length;i++){
-						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
-					}
-				}else if(choice == "Person"){
-					var attributeList = ['First Name','Last Name','Label','Birthday','Birth Month','Birth Year','Birth Place','Death Place','Death Day',
-					'Death Month','Death Year','Death Place','Gender','Address','Postcode','Place','Email','Telephone','Course Of Address','Contact Person',
-					'Relations','Has Education'];
-					for(var i=0;i<attributeList.length;i++){
-						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
-					}
-				}else if(choice == "Lemma"){
-					var attributeList = ['Type','Composed Of','Derived From','Label','High German','wbo','wboHomographe','wboSort','dbo','dboHomographe'
-					,'dboSort','dboType','wboDefinition','Release','Checked','Note','Has Lemma','Has Multimedia'];
-					for(var i=0;i<attributeList.length;i++){
-						opt[i] = "<option value="+attributeList[i]+">"+attributeList[i]+"</option>";
-					}
-				}
-				
-				$('#select2').html(opt);
-			});
-		});
-		</script>
+		<script src="{% static 'script/DDJQuery.js' %}" ></script>
 	</body>
 </html>

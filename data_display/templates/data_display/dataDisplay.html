@@ -5,94 +5,76 @@
 		<!-- a dictionary will be parsed into here containing all information about a subject(subject could be Questionnaire/1) therefore all information about 
 			Questionnaire/1 such as label, title, date etc is put into a dictionary and parsed into here
 		-->
-		<div class="col-5" style="margin: 40px 40px;" >
-			<table class="table table-bordered" style="width:60%;">
-				<tbody>
-				<thead class="thead-dark">
-					<tr>
-					  <th scope="col">{{name}}</th>
-					</tr>
-				</thead>
-				{% for firstIndex in range %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
-				
-					{% getListLength as listRange %} <!-- template tag(getListLength) returns listRange as a range datatype of 0-2 -->
-					<tr> <!-- each tr will contain to bit of info -->
-					{% for secondIndex in listRange %} 
-							<!-- this for loop reads the first value and determines if it is a 'uri' , if true then condition is true -->
-							{% typeTest firstIndex secondIndex as condition%}
-							{% if condition %}
-								<!-- will create a link -->
-								{% getData firstIndex 'value' secondIndex as urlData %}
-								{% getData firstIndex 'shortname' secondIndex as wordData %}
-								
-								{% imageTest wordData as testIfImage %} <!-- test to see if the wordData contains a .png or .jpg -->
-								
-								{% if testIfImage %} <!-- if it did contain a .png or .jpg -->
-								    <!-- will create a piece of table data in a table row with a url link -->
-								    <td ><a href="{% test urlData %}" data-toggle="tooltip" data-html="true" title="{% extraction urlData %}" >{{wordData}}</a></td>
-									<!-- test is a pattern matching regex to determine if teh given url could be used to navigate to other piece of info related to
-									the enitity. such as Questionnaire having an author 
-								    -->
-									{% addImageSource wordData%} <!-- since wordData did contain a .jpg or .png the list data type(which is default 0) will increment to 
-									indicate that there is an image to display 
-								    -->
-								{% else %}
-							        <td ><a href="{% test urlData %}" data-toggle="tooltip" data-html="true" title="{% extraction urlData %}">{{wordData}}</a></td>
-								{% endif %}
-							{% else %} 
-								<!-- getting to this else means that the tested value was not a uri. therefor the td will be created 
-								normally with no additional navigation links. however it must still be tested for a possible .png or .jpg-->
-								{% getData firstIndex 'shortname' secondIndex as wordData %}
-								{% imageTest wordData as testIfImage2 %}
-								{% if testIfImage2 %} <!-- this if statement is needed to create the data-id which is used to display the images -->
-									<td>{{wordData}}<i class="fa fa-image testClass" data-id="{% makeImageName %}" style="margin-left:3px;"></i></td>
-									{% addImageSource wordData%}
-								{% else %}
-								    <td>{{wordData}}</td>
-								{% endif %}
-							{% endif %}
+		<div class="col-10" >
+			<div class="col-5 tableBox" >
+				<h2>{{name}}</h2>
+
+					{% for firstIndex in range %} <!-- range return a range data type from the dictionary ie, how many subjects were in the url -->
+					
+						{% getListLength as listRange %} <!-- template tag(getListLength) returns listRange as a range datatype of 0-2 -->
+						<div class="infoBox"> <!-- each tr will contain to bit of info -->
+							{% for secondIndex in listRange %} 
+									<!-- this for loop reads the first value and determines if it is a 'uri' , if true then condition is true -->
+									{% typeTest firstIndex secondIndex as condition%}
+									{% if condition %}
+										<!-- will create a link -->
+										{% getData firstIndex 'value' secondIndex as urlData %}
+										{% getData firstIndex 'shortname' secondIndex as wordData %}
+										
+										{% imageTest wordData as testIfImage %} <!-- test to see if the wordData contains a .png or .jpg -->
+										{% moduloTest firstIndex as modTest %}
+										{% if testIfImage %} <!-- if it did contain a .png or .jpg -->
+											<!-- will create a piece of table data in a table row with a url link -->
+												<p><a href="{% test urlData %}" data-toggle="tooltip" data-html="true" title="{% extraction urlData %}">{{wordData}}</a></p>
+											<!-- test is a pattern matching regex to determine if the given url could be used to navigate to other piece of info related to
+											the enitity. such as Questionnaire having an author 
+											-->
+											{% addImageSource wordData%} <!-- since wordData did contain a .jpg or .png the list data type(which is default 0) will increment to 
+											indicate that there is an image to display 
+											-->
+										{% else %}
+												<p><a href="{% test urlData %}" data-toggle="tooltip" data-html="true" title="{% extraction urlData %}">{{wordData}}</a></p>
+										{% endif %}
+									{% else %} 
+										<!-- getting to this else means that the tested value was not a uri. therefor the p(tag) will be created 
+										normally with no additional navigation links. however it must still be tested for a possible .png or .jpg-->
+										{% getData firstIndex 'shortname' secondIndex as wordData %}
+										{% imageTest wordData as testIfImage2 %}
+										{% if testIfImage2 %} <!-- this if statement is needed to create the data-id which is used to display the images -->
+												<p>{{wordData}}<i class="fa fa-image testClass" data-id="{% makeImageName %}" data-toggle="tooltip" title="Show Image" style="margin-left:3px;"></i></p>
+											{% addImageSource wordData%}
+										{% else %}
+												<p>{{wordData}}</p>
+										{% endif %}
+									{% endif %}
+							{% endfor %}
+							<span><i class="fa fa-pencil saveIcons" data-id="{% makeName firstIndex %}" data-id="{% makeImageName %}" data-toggle="tooltip" title="Edit data" ></i></span>
+							<span style="display:none;" id="{% makeName firstIndex %}">
+								<form class="changeData" action="{% url 'data_display:changed' %}" method="post">
+									{% csrf_token %}
+									{% for field in form %} <!-- form in this case will have one value to display(newValue) -->
+										<div class="form-group">
+											<input type="text" class="form-data" name="{{field.html_name}}" placeholder="New Value" >
+											<input type="hidden" class="form-data" name="id" value="{{id}}">
+											<input type="hidden" class="form-data" name="targetUri" value="{% getData firstIndex 'value' 0 %}"> 
+											<!-- getData is a template tag which will retrieve the information for the form -->
+											<input type="hidden"  class="form-data" name="attributeName" value="{% getData firstIndex 'shortname' 0 %}">
+											<input type="hidden"  class="form-data" name="oldValue" value="{% getData firstIndex 'shortname' 1 %}">
+											<button type="submit" class="form-data"><i class="fa fa-save"></i></button>
+											{{ field.errors}}
+										</div>
+									{% endfor %}
+								</form>
+							</span>
+						</div>
 					{% endfor %}
-						<td><i class="fa fa-pencil saveIcons" style="color:green;" data-id="{% makeName firstIndex %}"></i></td>
-						<td style="display:none;" id="{% makeName firstIndex %}">
-							<form class="form-inline" action="{% url 'data_display:changed' %}" method="post">
-								{% csrf_token %}
-								{% for field in form %} <!-- form in this case will have one value to display(newValue) -->
-									<div class="form-group">
-										<input type="text" class="form-control" name="{{field.html_name}}" placeholder="New Value" >
-										<input type="hidden" class="form-control" name="id" value="{{id}}">
-										<input type="hidden" class="form-control" name="targetUri" value="{% getData firstIndex 'value' 0 %}"> 
-										<!-- getData is a template tag which will retrieve the information for the form -->
-										<input type="hidden" class="form-control" name="attributeName" value="{% getData firstIndex 'shortname' 0 %}">
-										<input type="hidden" class="form-control" name="oldValue" value="{% getData firstIndex 'shortname' 1 %}">
-										<button class="btn btn-outline-success" type="submit" style="margin-left:18px;"><i class="fa fa-save"></i></button>
-										{{ field.errors}}
-									</div>
-								{% endfor %}
-							</form>
-						</td>
-					</tr>
-				{% endfor %}
-				</tbody>
-			</table>
-		</div>
-		<style>
-			.imageToShow{
-				display:none;
-				position:absolute;
-				top:0;
-				transform:translateY(50%);
-				z-index:100;
-				max-width:400px;
-				max-height:400px;
-				border:1px solid white;
-				box-shadow: -10px 10px 2px 2px #c6c6c6;
-			}
-		</style>
-		<div class="col-4">
-			{% imagesRange as ranges %} <!-- imagesRange will return a range of the number of images contained in the entity -->
+			</div>
+			<div class="col-5 tableBox" >
+			{% imagesRange as ranges %}
 			{% for i in ranges %}
-			    <!-- currently using a default image (bg.png) as I have no access to the images on the server, this can be changed with a simple template tag -->
-				<img src="{% static 'images/bg.jpg' %}" alt="bg.png" class="imageToShow" id="{% makeNewImageName i %}"/>
+			    <img src="{% static 'images/person.jpg' %}" class="imageBox" id="{% makeNewImageName i %}" style="display:none;"/>
 			{% endfor %}
+			</div>
 		</div>
+
 {% endblock %}

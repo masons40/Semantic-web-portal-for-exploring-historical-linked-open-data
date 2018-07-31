@@ -2,25 +2,19 @@
 {% load search_filter %}
 {% load staticfiles %}
         {% block content %}
-		<div class="col-2 col-md-5 col-sm-10 mt-4">
-			<div class="card mr-3">
-				<div class="card-header bg-dark text-light">Sign Up</div>
-					<form action="{% url 'account:signup' %}" method="post" style="background-color:light-grey;">
-						{% csrf_token %}
+		<div class="col-10">
+			<div class="cent">
+				<div class="sign" id="signUp">
+					<form>
+						<h4>Sign Up</h4>
 						{% for field in form %}
-						<div class="form-group p-2">
-							{% if field.type == password %}
-								<label >{{ field.html_name }}</label>
-								{{field}}
-							{% else %}
-								<label >{{ field.html_name }}</label>
-								{{field}}
-							{% endif %}
-							{{ field.errors}}
-						</div>
+							<label>{{ field.html_name }}</label>
+							{{field}}
+							<br>
 						{% endfor %}
-						<input type="submit" class="btn btn-primary m-3" value="Signup">
+						<button type="submit">Sign Up</button>
 					</form>
+				</div>
 			</div>
 		</div>
 		{% endblock %}

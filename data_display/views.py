@@ -11,11 +11,12 @@ from . import forms
 from django.contrib.auth.decorators import login_required
 from data_display.models import changes
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.forms import AuthenticationForm
 
 
 
 names = ['Questionnaire','Question','PaperSlip','Source','Multimedia','PaperSlip Record','Lemma','Person']
-#index currently works for everything except Question
+
 def index(request,type=None,amount=None,offset=None):
     url2 = "http://exploreat.adaptcentre.ie/"
     
@@ -65,13 +66,22 @@ def index(request,type=None,amount=None,offset=None):
     if type != None:
         newUrl = url2 + type
         context = getAllInfo(newUrl,amount,offset,type)
+        context["displayCards"] = True;
         return render(request, 'data_display/index.html',context)
        
-    
-    return render(request, 'data_display/base.html')
+    if request.user.is_authenticated:
+        username = request.user.username
+        loggedIn = True
+        context = {'username':username,'loggedIn':loggedIn}
+    else:
+        context = {'loggedIn':False}
+        form = AuthenticationForm()
+        context['form']=form
+		
+    return render(request, 'data_display/home.html',context)
 	
 def search(request):
-    dataset="https://dboe-jena.hephaistos.arz.oeaw.ac.at/Questionnaire/query"
+    dataset="http://localhost:3030/dboe/query"
     subject = request.POST['type']
     predicate = request.POST['select2']
     object = request.POST['val']
@@ -83,21 +93,30 @@ def search(request):
                     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
                     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                     prefix oldcan: <https://explorations4u.acdh.oeaw.ac.at/ontology/oldcan#>
-
+				
                     SELECT *
-                  
+					from Named <http://exploreat.adaptcentre.ie/Questionnaire_graph>
                     WHERE {
-					?s ?p ?o.
-					?s rdf:type oldcan:Questionnaire.
-					
+					 Graph <http://exploreat.adaptcentre.ie/Questionnaire_graph>{
+							?s rdf:type oldcan:""" + subject +""".
+							?s """ + predicate +""" ?o .
+							Filter regex(?o, \"""" + object +"""\" ,"i").
+							
+						}
 					} 
 					limit 10
                  """)
-    print(sparql)
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
-    print(results)
-    return results
+    
+    context = {}
+    index =0;
+    length = len(results['results']['bindings'])
+    for i in range(0,length):
+        context[i] = results['results']['bindings'][i]['s']['value'];
+    
+    context['range'] = range(0,length);
+    return render(request, 'data_display/index.html',context)
 
 def infoDisplay(request,type,id):
     defaultStrUrl='http://exploreat.adaptcentre.ie/'

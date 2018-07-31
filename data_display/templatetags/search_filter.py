@@ -116,7 +116,7 @@ def getInfoForIndex(context,firstNum,secondNum):
     # in this case context is a dictionary of subjects containing urls.
     dic = retData(context[firstNum]) #return all information about the url ie,title label etc. firstnum is from the first range (0,10)
     val = dic[secondNum]['shortname'][1] #will return the predicate to be shown. ie, label,title etc
-    return dic[secondNum]['shortname'][0] + ": " + val[0:9] + "..." #predication and object value will be returned
+    return dic[secondNum]['shortname'][0] + ": " + val[0:6] + "..." #predication and object value will be returned
 
 @register.simple_tag()	
 def getQuestions():
@@ -265,8 +265,12 @@ def forwardTen(amount, offset, type):
     newOffset = int(offset)+10
     return '../../../../data_display/'+str(type)+'/'+str(amount)+'/'+str(newOffset)
 	
-	
-	
+@register.simple_tag()
+def moduloTest(arg):
+    if arg%2 == 0:
+        return True
+    else:
+        return False
 	
 	
 	
